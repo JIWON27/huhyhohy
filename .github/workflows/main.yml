@@ -27,8 +27,10 @@ jobs:
           password: ${{ secrets.DOCKER_HUB_PASSWORD }}
       - name: Docker Build
         run:  docker build -t huhyhohy .
-          docker tag huhyhohy jiwon27/huhyhohy:${GITHUB_SHA::7}
-          docker push jiwon27/huhyhohy:${GITHUB_SHA::7}
+      - name: Docker change tag
+        run : docker tag huhyhohy jiwon27/huhyhohy:${GITHUB_SHA::7}
+      - name : docker push
+        run: docker push jiwon27/huhyhohy:${GITHUB_SHA::7}
       - name: Deploy
         uses: appleboy/ssh-action@master
         with:
