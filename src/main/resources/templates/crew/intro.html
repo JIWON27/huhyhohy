@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>크루 상세 화면</title>
+  <link rel="stylesheet" th:href="@{/css/crew/intro.css}">
+</head>
+
+<body>
+  <header th:replace="~{fragment/fragment :: crewDetailheader(${crewResponseDto.name})}"></header>
+  <nav th:replace="~{fragment/fragment :: crewDetailnav(${loginUser.name}, ${crewResponseDto.leader}
+  ,${crewResponseDto.users.contains(loginUser)}, ${crewResponseDto.recruit} )}"></nav>
+
+  <div id="container">
+    <h2 th:text="|안녕하세요. ${crewResponseDto.name}입니다.|"></h2>
+    <h4>👍저희 크루는 이런 크루입니다.</h4>
+    <p th:text="${crewResponseDto.description}">
+    <h4>🧐저희 크루는 이러한 사람을 원해요.</h4>
+    <p th:text="${crewResponseDto.wisher}"></p>
+    <h4>📆저희 크루의 활동 계획입니다.</h4>
+    <p th:text="${crewResponseDto.plan}">
+    <h2>👥크루원</h2>
+    <p th:text="|크루장 : ${crewResponseDto.leader}|"></p>
+    <div class="member" th:each="member : ${crewResponseDto.getUsers()}">
+      <img id="profile" th:src="|/profile/profile.png|" alt="프로필 사진" th:if="${member.profile == null}"
+           width="200" height="200">
+      <img th:src="|/profile/${member.profile.getStoreFilename()}|" th:if="${member.profile != null}"
+           width="200" height="200"/>
+
+      <p th:text="|크루원 : ${member.nickname}|"></p>
+    </div>
+  </div>
+
+<div th:replace="~{fragment/fragment :: footerFragment}"></div>
+</main>
+</body>
+</html>

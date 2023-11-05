@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>자유게시판</title>
+  <link rel="stylesheet" th:href="@{/css/board/main.css}">
+</head>
+<body>
+<header th:replace="~{fragment/fragment :: boardHeader}"></header>
+
+<div class="container">
+  <div class="board" th:each="board : ${boards}">
+    <div class="board-body">
+      <a th:href="@{/boards/{boardId}(boardId=${board.id})}"><h4 class="title" th:text="${board.title}"></h4></a>
+      <p class="content" th:text="${board.content}"></p> <!-- 나중에 텍스트....처리하는 css할려고함.-->
+    </div>
+    <hr>
+    <div class="board-info">
+      작성자 : <span class="writer" th:text="${board.nickname}"></span>
+    </div>
+  </div>
+
+  <div class="page-btn">
+    <a th:if="${!boards.isFirst()}" th:href="@{/boards(page=${boards.getNumber() - 1})}">이전 페이지</a>
+    <a th:if="${!boards.isLast()}" th:href="@{/boards(page=${boards.getNumber() + 1})}"}>다음 페이지</a>
+  </div>
+
+</div>
+
+</body>
+</html>

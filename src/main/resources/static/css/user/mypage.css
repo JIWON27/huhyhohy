@@ -1,0 +1,63 @@
+* {
+    box-sizing: border-box;
+}
+body {
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+}
+header {
+    width: 100%;
+    height: 70px;
+    background-color: rgba(253, 82, 0, 0.75);
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    position: sticky;
+}
+.left-section {
+    display: flex;
+    margin-left: 1em;
+
+}
+.right-section {
+    margin-right: 1em;
+}
+
+#container {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    margin-top: 20px;
+
+}
+.user {
+    display: flex;
+    flex-direction: column;
+    border-right: 1px solid gray;
+    border-right-width: medium;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+.user > button {
+    width: 120px;
+}
+#profile {
+    width: 100px;
+    height: 100px;
+}
+
+.crew-info {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+}
+.crew-info > div {
+    border: 1px solid black;
+}
+img {
+    width: 100px;
+    height: 100px;
+}

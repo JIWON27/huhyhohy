@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>크루 상세 화면</title>
+  <link rel="stylesheet" th:href="@{/css/crew/setting.css}">
+</head>
+<body>
+<header th:replace="~{fragment/fragment :: crewDetailheader(${crewResponseDto.name})}"></header>
+<nav th:replace="~{fragment/fragment :: crewDetailnav(${loginUser.name}, ${crewResponseDto.leader},
+${crewResponseDto.users.contains(loginUser)}, ${crewResponseDto.recruit} )}"></nav>
+
+<div id="container">
+  <div class="setting">
+    <div class="crew-setting">
+      <!--배너 변경 폼-->
+      <form id="bannerForm" th:action="@{/crews/{id}/banner/update(id=${crewResponseDto.id})}" th:object="${bannerUpdateDto}"
+            method="post" enctype="multipart/form-data">
+        <div class="banner">
+          <input type="file" multiple="multiple" th:field="*{banner}">
+        </div>
+        <!--글 등록 버튼-->
+        <button type="submit">변경</button>
+        <button type="submit">삭제</button>
+
+      </form>
+      <!--크루 공개-->
+      <form th:action="@{/crews/{id}/published(id=${crewResponseDto.id})}" method="post">
+        <button type="submit"  th:text="${crewResponseDto.published} ? '크루 비공개' : '크루원 공개'">크루 비공개</button>
+      </form>
+      <!--크루 인원 모집 -->
+      <form th:action="@{/crews/{id}/recruit(id=${crewResponseDto.id})}" method="post">
+        <button type="submit" th:text="${crewResponseDto.recruit} ? '크루원 모집 중단' : '크루원 모집하기'"></button>
+      </form>
+        <!--크루 종료, 활동일지 등 이런걸 추억으로 남기고 싶을 땐 종료하고 마이페이지 관심 크루, 종료 크루, 참여 크루 보여주자....-->
+      <form th:action="@{/crews/{id}/close(id=${crewResponseDto.id})}" method="post">
+        <button type="submit" th:text="${crewResponseDto.closed} ? '크루 활성화' : '크루 활동 종료'"></button>
+      </form>
+        <!--크루 삭제-->
+      <form th:action="@{/crews/{id}/delete(id=${crewResponseDto.id})}" method="delete">
+        <button type="submit">크루 삭제</button>
+      </form>
+    </div> <!--crew-setting-->
+
+    <form th:action th:object="${crewUpdateRequestDto}" method="post">
+      <div class="text">
+        <label for="crewName">크루즈명</label>
+        <input type="text" id="crewName" placeholder="크루명을 수정합니다." th:field="*{name}">
+      </div>
+      <div class="checkbox">
+        <label for="online">온라인 유무(체크O - 온라인, 체크X - 오프라인)</label>
+        <input type="checkbox" id="online" th:field="*{type}">
+      </div>
+
+      <div class="checkbox">
+        <label for="cost">비용 유무(체크O - 유료, 체크X - 무료)</label>
+        <input type="checkbox" id="cost" th:field="*{cost}">
+      </div>
+
+      <div class="text">
+        <label for="crewGoal">크루 소개</label>
+        <textarea type="text" id="crewGoal" placeholder="크루 소개를 수정합니다." th:field="*{description}"></textarea>
+      </div>
+
+      <div class="text">
+        <label for="wisher">이런 선원을 원해요.</label>
+        <textarea type="text" id="wisher" placeholder="원하는 선원을 수정합니다." th:field="*{wisher}"></textarea>
+      </div>
+
+      <div class="text">
+        <label for="plan">크루 계획</label>
+        <textarea type="text" id="plan" placeholder="크루 계획을 수정합니다." th:field="*{plan}"></textarea>
+      </div>
+    <button type="submit">수정</button>
+    </form>
+  </div><!--setting-->
+</div> <!--container-->
+
+<div th:replace="~{fragment/fragment :: footerFragment}"></div>
+</main>
+</body>
+</html>

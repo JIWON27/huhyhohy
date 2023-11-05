@@ -1,0 +1,88 @@
+body {
+    margin: 0;
+    padding: 0;
+}
+header {
+    width: 100%;
+    height: 70px;
+    background-color: rgba(253, 82, 0, 0.75);
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+
+    position: sticky;
+    top: 0;
+}
+.left-section {
+    display: flex;
+    justify-content: space-evenly;
+    margin-left: 1em;
+
+}
+.middle-section {
+    display: flex;
+    align-items: center;
+}
+.right-section {
+    margin-right: 1em;
+}
+.intro {
+    padding-top: 3rem;
+    padding-bottom: 3rem;
+    margin-bottom: 0;
+    background-color: sandybrown;
+}
+nav {
+    display: flex;
+    justify-content: space-between;
+    height: 3em;
+    background-color: lightpink;
+}
+.intro-btn {
+    display: flex;
+    margin-left: 2em;
+}
+.crew-btn {
+    display: flex;
+    margin-right: 2em;
+}
+/* 버튼에만 테두리 스타일을 적용 */
+nav .intro-btn button,
+nav .crew-btn button {
+    border: 2px solid #000; /* 테두리 스타일과 색상을 조정하세요 */
+    border-radius: 10px; /* 테두리의 둥글게 만들 정도를 조정하세요 */
+    /* 다른 버튼 스타일 속성도 여기에 추가하세요 */
+}
+
+/* 버튼 호버(마우스를 올릴 때) 스타일 */
+nav .intro-btn button:hover,
+nav .crew-btn button:hover {
+    border: 2px solid #00F; /* 마우스 호버 시 테두리 색상 변경 (예시: 파란색) */
+    /* 다른 호버 스타일 속성도 여기에 추가하세요 */
+}
+a {
+    text-decoration-line: none;
+}
+
+#container{
+    min-height: calc(100vh - 5rem); /* footer 높이를 빼준다. */
+    margin-left: 30rem;
+    margin-right: 30rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+}
+
+
+footer{
+    height: 5rem; /* footer 높이 */
+    background: yellow;
+    text-align: center;
+}

@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+<header th:fragment="boardHeader">
+  <div class="left-section">
+    <ul><a href="/boards">자유게시판</a></ul>
+    <ul><a href="/crews">크루 화면</a></ul>
+  </div>
+
+  <div class="right-section">
+    <button type="button" th:onclick="|location.href='@{/board/form}'|">글 등록</button> <!-- 폼 태그로 감싸던가 아니면 자바스크립트-->
+    <form th:action="@{/logout}" th:method="post">
+      <button type="submit">로그아웃</button>
+    </form>
+    <button type="button" th:onclick="|location.href='@{/my-page}'|">마이페이지</button>
+  </div>
+</header>
+
+<header th:fragment="crewDetailheader(name)">
+  <div class="left-section">
+    <ul><a href="/boards">자유게시판</a></ul>
+    <ul><a href="/crews">크루 화면</a></ul>
+  </div>
+  <div class="middle-section">
+    <h1 th:text="${name}"></h1>
+  </div>
+  <div class="right-section">
+    <form th:action="@{/logout}" th:method="post">
+      <button type="submit">로그아웃</button>
+    </form>
+    <button type="button" th:onclick="|location.href='@{/my-page}'|">마이페이지</button>
+  </div>
+</header>
+
+<nav class="info" th:fragment="crewDetailnav(loginUserNicname, crewLeaderName,isMember, isRecruit)">
+  <div class="intro-btn">
+    <button type="button" th:onclick="|location.href='@{/crews/{id}(id=${crewResponseDto.id})}'|">
+      소개
+    </button>
+    <button type="button" th:onclick="|location.href='@{/crews/{id}/meeting(id=${crewResponseDto.id})}'|">
+      모임 목록
+    </button>
+    <button type="button" th:if="${isMember || loginUserNicname == crewLeaderName}"
+            th:onclick="|location.href='@{/crews/{crewId}/meeting/form(crewId=${crewResponseDto.id})}'|">모임 생성
+    </button>
+    <button type="button" th:if="${loginUserNicname == crewLeaderName}"
+            th:onclick="|location.href='@{/crews/{crewId}/setting(crewId=${crewResponseDto.id})}'|">크루 설정
+    </button>
+
+  </div>
+  <div class="crew-btn">
+    <button type="button" th:if="${!isMember and loginUserNicname != crewLeaderName}"
+            th:onclick="|location.href='@{/crews/{crewId}/like(crewId=${crewResponseDto.id})}'|">관심있어요.
+    </button>
+    <button type="button" th:if="${isMember}"
+            th:onclick="|location.href='@{/crews/{crewId}/leave(crewId=${crewResponseDto.id})}'|">크루 탈퇴
+    </button>
+    <button type="button" th:if="${!isMember and loginUserNicname != crewLeaderName and isRecruit}"
+            th:onclick="|location.href='@{/crews/{crewId}/join(crewId=${crewResponseDto.id})}'|">크루 가입
+    </button>
+  </div>
+</nav>
+
+<footer th:fragment="footerFragment">
+  <p> COPYRIGHT@ JIWON27</p>
+</footer>
+</body>
+</html>

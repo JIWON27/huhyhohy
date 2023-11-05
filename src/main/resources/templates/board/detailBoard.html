@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>상세 조회 화면</title>
+  <link rel="stylesheet" th:href="@{/css/board/detailBoard.css}">
+
+</head>
+<body>
+<header th:replace="~{fragment/fragment :: boardHeader}"></header>
+
+  <div class="container">
+    <div class="board-body">
+      작성자 : <span th:text="${board.nickname}"></span>
+      <h4 class="title" th:text="${board.title}"></h4>
+      <p class="content" th:text="${board.content}"></p> <!-- 나중에 텍스트....처리하는 css할려고함.-->
+      <!--이미지-->
+      <img th:each="imageFile : ${board.imageFiles}" th:src="|/images/${imageFile.getStoreFilename()}|"
+           width="300" height="300"/>
+    </div>
+    <!--버튼 영역-->
+    <div>
+      <form th:action="@{/boards/{boardId}(boardId=${board.id})}" th:method="delete">
+        <button type="button"
+                th:onclick="|location.href='@{/boards}'|">취소</button>
+        <button type="button"
+                th:if="${board.nickname != null && board.nickname == loginUser.nickname}"
+                th:onclick="|location.href='@{/boards/{boardId}/edit(boardId=${board.id})}'|">수정</button>
+        <button type="submit"
+                th:if="${board.nickname != null && board.nickname == loginUser.nickname}"
+                th:onclick="|location.href='@{/boards/{boardId}(boardId=${board.id})}'|">삭제</button>
+      </form>
+    </div>
+    <hr>
+    <!-- 댓글 영역 -->
+    <div class="reply-container">
+      <!-- 댓글 입력 폼 -->
+      <form th:action="@{/boards/reply/{boardId}(boardId=${board.id})}" th:object="${replySaveRequestDto}" method="post">
+        <textarea rows="5" cols="50" th:field="*{comment}" placeholder="댓글을 입력해주세요."></textarea>
+        <button type="submit">등록</button>
+      </form>
+
+      <div class="reply" th:each="reply :${board.getReplies()} ">
+        <!-- 댓글 수정 폼 -->
+        <form class="edit-form" style="display: none"
+              th:action="@{/boards/edit/reply/{replyId}(replyId=${reply.id})}"
+              th:object="${replyUpdateRequestDto}" method="post">
+          <textarea name="editedContent" rows="5" cols="50"
+                    th:field="*{comment}" placeholder="수정할 댓글을 입력해주세요"></textarea>
+          <button type="submit">저장</button>
+        </form>
+
+        <p th:text="${reply.comment}"></p>
+        <p th:text="${reply.nickname}"></p>
+        <p th:text="${reply.lastModifiedDate}"></p>
+        <form th:action="@{/boards/reply/{replyId}(replyId=${reply.id})}" th:method="delete">
+          <button
+              th:if="${reply.nickname != null && reply.nickname == loginUser.nickname}"
+              type="submit">삭제
+          </button>
+          <button
+              th:if="${reply.nickname != null && reply.nickname == loginUser.nickname}"
+              th:onclick="'toggleEditForm(this)'"
+              type="button">수정
+          </button>
+        </form>
+        <hr>
+      </div>
+    </div><!-- reply-container -->
+
+  </div><!--container -->
+  <script th:inline="javascript">
+      function toggleEditForm(button) {
+          // Find the closest .reply container for the clicked button
+          var replyContainer = button.closest('.reply');
+          // Find the edit form within the same container
+          var editForm = replyContainer.querySelector('.edit-form');
+
+          // Toggle the visibility of the edit form for this specific comment
+          if (editForm.style.display == 'none') {
+              editForm.style.display = 'block';
+          } else {
+              editForm.style.display = 'none';
+          }
+      }
+  </script>
+</body>
+</html>

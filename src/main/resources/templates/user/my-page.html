@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>마이 페이지</title>
+  <link rel="stylesheet" th:href="@{/css/user/mypage.css}">
+</head>
+<body>
+  <header>
+    <div class="left-section">
+      <ul><a href="/boards">자유게시판</a></ul>
+      <ul><a href="/crews">크루 화면</a></ul>
+    </div>
+
+    <div class="right-section">
+      <button type="submit" th:onclick="|location.href='@{/logout}'|" th:if="${loginUser != null}">로그아웃</button>
+    </div>
+  </header>
+  <div id="container">
+    <div class="user">
+      <img id="profile" th:src="|/profile/profile.png|" alt="프로필 사진" th:if="${loginUser.profile == null}">
+      <img th:src="|/profile/${loginUser.profile.getStoreFilename()}|" th:if="${loginUser.profile != null}"/>
+      <p th:text="${loginUser.nickname}"></p>
+
+      <!--프로필 변경 폼-->
+      <form id="profileForm" th:action="@{/profile/update}" th:object="${profileUpdateDto}"
+            method="post" enctype="multipart/form-data" style="display: none;">
+        <!--프로필 -> 우선 임시고, 프로필 변경 버튼 누르면 그냥 변경폼이 나오도록 자바스크림트로 구현하기.-->
+        <div class="profile_img">
+          <input type="file" multiple="multiple" th:field="*{profile}">
+        </div>
+        <!--글 등록 버튼-->
+        <button type="submit">변경</button>
+        <button type="submit" th:if="${loginUser.profile != null}">삭제</button>
+
+      </form>
+
+      <button id="profileChangeBtn">프로필 수정</button>
+      <button>내가 쓴 게시물 보기</button>
+      <button>내가 쓴 댓글 보기</button>
+      <button>비밀번호 수정</button>
+      <button>회원 탈퇴</button>
+    </div>
+
+    <div class="crews">
+      <h3>관리 중인 크루 (크루장인 경우)</h3>
+      <div class="crew-info">
+        <div th:each="crew : ${leaderCrew}">
+          <a th:href="@{/crews/{id}(id=${crew.id})}" th:text="${crew.name}"></a>
+        </div>
+      </div>
+
+      <h3>참여하고 있는 크루</h3>
+      <div class="crew-info">
+        <div th:each="crew : ${joinCrews}">
+          <p th:if="${crew.isClosed()}">활동 종료</p>
+          <a th:href="@{/crews/{id}(id=${crew.id})}" th:text="${crew.name}"></a>
+        </div>
+      </div>
+
+      <h3>관심 있는 크루</h3>
+      <div class="crew-info">
+        <div th:each="crew : ${likeCrews}">
+          <a th:href="@{/crews/{id}(id=${crew.id})}" th:text="${crew.name}"></a>
+        </div>
+      </div>
+
+    </div> <!--crews-->
+  </div> <!--container-->
+  <script>
+      const profileChangeBtn = document.getElementById("profileChangeBtn");
+      const profileForm = document.getElementById("profileForm");
+
+      // 프로필 변경 버튼을 클릭했을 때
+      profileChangeBtn.addEventListener("click", () => {
+          // 폼을 토글하여 보이거나 숨깁니다.
+          if (profileForm.style.display === "none") {
+              profileForm.style.display = "block";
+          } else {
+              profileForm.style.display = "none";
+          }
+      });
+  </script>
+</body>
+</html>
