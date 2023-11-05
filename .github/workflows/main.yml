@@ -26,19 +26,19 @@ jobs:
           username: ${{ secrets.DOCKER_HUB_USERNAME }}
           password: ${{ secrets.DOCKER_HUB_PASSWORD }}
       - name: Docker Build
-        run:  docker build -t blog-spring-cicd .
-          docker tag spring-cicd jiwon27/blog-spring-cicd:${GITHUB_SHA::7}
-          docker push jiwon27/blog-spring-cicd:${GITHUB_SHA::7}
+        run:  docker build -t huhyhohy .
+          docker tag huhyhohy jiwon27/huhyhohy:${GITHUB_SHA::7}
+          docker push jiwon27/huhyhohy:${GITHUB_SHA::7}
       - name: Deploy
         uses: appleboy/ssh-action@master
         with:
-          host: ec2-43-202-63-17.ap-northeast-2.compute.amazonaws.com
+          host: ${{ secrets.AWS }}
           username: ubuntu
           key: ${{ secrets.KEY }}
           envs: GITHUB_SHA
           script: |
-            docker pull jiwon27/blog-spring-cicd:${GITHUB_SHA::7}
-            docker tag jiwon27/blog-spring-cicd:${GITHUB_SHA::7} blog-spring-cicd
+            docker pull jiwon27/huhyhohy:${GITHUB_SHA::7}
+            docker tag jiwon27/huhyhohy:${GITHUB_SHA::7} huhyhohy
             docker stop server
             docker rm -f server
-            docker run -d --name server -p 8080:8080 blog-spring-cicd
+            docker run -d --name server -p 8080:8080 huhyhohy
