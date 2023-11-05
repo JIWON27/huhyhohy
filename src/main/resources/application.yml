@@ -1,12 +1,7 @@
 
 spring:
-  h2: # 추가
-    console: # 추가
-      path: /h2-console # 추가
-      enabled: true # 추가
   datasource:
-    #url: jdbc:h2:tcp://localhost/~/blog
-    url: jdbc:h2:~/test;
+    url: jdbc:h2:tcp://localhost/~/blog
     username: sa
     password:
     driver-class-name: org.h2.Driver
