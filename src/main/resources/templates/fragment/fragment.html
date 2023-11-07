@@ -37,21 +37,15 @@
     <button type="button" th:onclick="|location.href='@{/crews/{id}(id=${crewResponseDto.id})}'|">
       소개
     </button>
-    <button type="button" th:onclick="|location.href='@{/crews/{id}/meeting(id=${crewResponseDto.id})}'|">
-      모임 목록
-    </button>
-    <button type="button" th:if="${isMember || loginUserNicname == crewLeaderName}"
-            th:onclick="|location.href='@{/crews/{crewId}/meeting/form(crewId=${crewResponseDto.id})}'|">모임 생성
-    </button>
     <button type="button" th:if="${loginUserNicname == crewLeaderName}"
             th:onclick="|location.href='@{/crews/{crewId}/setting(crewId=${crewResponseDto.id})}'|">크루 설정
     </button>
 
   </div>
   <div class="crew-btn">
-    <button type="button" th:if="${!isMember and loginUserNicname != crewLeaderName}"
-            th:onclick="|location.href='@{/crews/{crewId}/like(crewId=${crewResponseDto.id})}'|">관심있어요.
-    </button>
+    <form th:action="@{/crews/{id}/like(id=${crewResponseDto.id})}" th:method="post">
+      <button type="submit" th:if="${!isMember and loginUserNicname != crewLeaderName}">관심있어요.</button>
+    </form>
     <button type="button" th:if="${isMember}"
             th:onclick="|location.href='@{/crews/{crewId}/leave(crewId=${crewResponseDto.id})}'|">크루 탈퇴
     </button>

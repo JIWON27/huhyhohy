@@ -23,10 +23,9 @@
     <p th:text="|크루장 : ${crewResponseDto.leader}|"></p>
     <div class="member" th:each="member : ${crewResponseDto.getUsers()}">
       <img id="profile" th:src="|/profile/profile.png|" alt="프로필 사진" th:if="${member.profile == null}"
-           width="200" height="200">
+           width="70" height="70">
       <img th:src="|/profile/${member.profile.getStoreFilename()}|" th:if="${member.profile != null}"
-           width="200" height="200"/>
-
+           width="70" height="70"/>
       <p th:text="|크루원 : ${member.nickname}|"></p>
     </div>
   </div>

@@ -5,7 +5,6 @@ import com.jiwon.huhyhohy.domain.crew.Crew;
 import com.jiwon.huhyhohy.domain.user.User;
 import com.jiwon.huhyhohy.repository.BoardRepository;
 import com.jiwon.huhyhohy.repository.CrewRepository;
-import com.jiwon.huhyhohy.repository.MeetingRepository;
 import com.jiwon.huhyhohy.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
@@ -23,9 +22,6 @@ public class BlogApplication {
   private BoardRepository boardRepository;
   @Autowired
   private CrewRepository crewRepository;
-
-  @Autowired
-  private MeetingRepository meetingRepository;
 
   public static void main(String[] args) {
     SpringApplication.run(BlogApplication.class, args);

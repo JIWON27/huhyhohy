@@ -53,7 +53,7 @@ public class CrewViewController {
 
     model.addAttribute("loginUser", loginUser);
     model.addAttribute("crewResponseDto", crewResponseDto);
-
+    log.info("members={}", crewResponseDto.getUsers().size());
     return "crew/intro";
   }
 
@@ -64,13 +64,14 @@ public class CrewViewController {
                           direction = Sort.Direction.DESC) Pageable pageable,
                       @SessionAttribute(name = "loginUser", required = false) User loginUser) {
     Page<CrewResponseDto> crews = crewService.findAll(pageable);
+    Page<CrewResponseDto> hotCrews = crewService.findHotCrews(pageable);
 
     model.addAttribute("loginUser", loginUser);
     model.addAttribute("crews", crews); // 현재 모집 중인 크루즈를 나타낼 때 사용
-    //model.addAttribute("top10Crew", crews); // top10크루 정보를 담고 있음 -> 쿼리를 생성해서 가져와야할듯
+    model.addAttribute("hotCrews", hotCrews); // top10크루 정보를 담고 있음 -> 쿼리를 생성해서 가져와야할듯
     return "main";
-
   }
+
   @DeleteMapping("/crews/{id}/delete")
   public String deleteCrew(@PathVariable Long id){
     crewService.delete(id);

@@ -8,6 +8,7 @@ import com.jiwon.huhyhohy.repository.UserRepository;
 import com.jiwon.huhyhohy.web.dto.board.BoardResponseDto;
 import com.jiwon.huhyhohy.web.dto.board.BoardSaveRequestDto;
 import com.jiwon.huhyhohy.web.dto.board.BoardUpdateRequestDto;
+import com.jiwon.huhyhohy.web.dto.user.UserResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -91,5 +92,12 @@ public class BoardService {
       board.setImgFile(imgFiles); //
     }
     board.update(request.getTitle(), request.getContent());
+  }
+
+  // 내가 쓴 게시물 보기
+  public List<BoardResponseDto> findMyBoards(String nickname){
+    User user = userRepository.findUserByNickname(nickname).orElseThrow(IllegalArgumentException::new);
+    List<Board> myBoards = boardRepository.findByUser(user);
+    return myBoards.stream().map(BoardResponseDto::new).collect(Collectors.toList());
   }
 }

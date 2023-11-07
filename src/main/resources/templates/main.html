@@ -15,8 +15,9 @@
 
   <div class="right-section">
     <button type="submit" th:onclick="|location.href='@{/crews/form}'|" th:if="${loginUser != null}">크루 생성</button>
-    <button type="submit" th:onclick="|location.href='@{/logout}'|" th:if="${loginUser != null}">로그아웃</button>
-    <button type="submit" th:onclick="|location.href='@{/my-page}'|" th:if="${loginUser != null}">마이페이지</button>
+    <form th:action="@{/logout}" th:method="post" th:if="${loginUser != null}">
+      <button type="submit">로그아웃</button>
+    </form>    <button type="submit" th:onclick="|location.href='@{/my-page}'|" th:if="${loginUser != null}">마이페이지</button>
     <button type="submit" th:onclick="|location.href='@{/login}'|" th:if="${loginUser == null}">로그인</button>
     <button type="submit" th:onclick="|location.href='@{/sign-up}'|" th:if="${loginUser == null}">회원가입</button>
   </div>
@@ -26,9 +27,9 @@
     <img id="main-banner" src="/asset/huhyhohy.png" alt="배너 사진" >
   </div>
 
-  <h3>Top 10 크루</h3>
+  <h3>HOT 10 크루</h3>
   <div class="top10-crew">
-    <div class="crew"  th:each="crew : ${crews}" th:if="${crew.isPublished && !crew.closed}">
+    <div class="crew"  th:each="crew : ${hotCrews}" th:if="${crew.isPublished && !crew.closed}">
 
       <div class="crew-banner-container">
         <img class="crew-banner" th:src="|/banner/banner.jpg|" alt="배너 사진" th:if="${crew.banner == null}">
@@ -40,6 +41,7 @@
         <span th:text="${crew.leader}"></span> <br>
         <span th:text="${crew.type} ? '온라인 활동' : '오프라인 활동'"></span><br> <!--crew.type=true면 온라인-->
         <span th:text="${crew.cost} ? '유료' : '무료'"></span><br> <!--crew.cost=true면 유료-->
+        <span th:text="${crew.likeCnt}"></span>
       </div>
     </div> <!--crew-->
 
@@ -60,6 +62,7 @@
           <span th:text="${crew.leader}"></span> <br>
           <span th:text="${crew.type} ? '온라인 활동' : '오프라인 활동'"></span><br> <!--crew.type=true면 온라인-->
           <span th:text="${crew.cost} ? '유료' : '무료'"></span><br> <!--crew.cost=true면 유료-->
+          <span th:text="${crew.likeCnt}"></span>
         </div><!--crew-info-->
       </div> <!--crew-->
     </div> <!--crew-container-->

@@ -37,6 +37,11 @@ public class CrewService {
     Page<CrewResponseDto> crews = crewRepository.findAll(pageable).map(CrewResponseDto::new);
     return crews;
   }
+  // 크루 전체 조회 - hot 10 기준은... 1. 관심있어요가 많은 크루 순
+  public Page<CrewResponseDto> findHotCrews(Pageable pageable) {
+    Page<CrewResponseDto> crews = crewRepository.findHotCrews(pageable).map(CrewResponseDto::new);
+    return crews;
+  }
   // 크루 상세 조회
   public CrewResponseDto findById(Long id){
     Crew crew = crewRepository.findById(id).orElseThrow(IllegalArgumentException::new);

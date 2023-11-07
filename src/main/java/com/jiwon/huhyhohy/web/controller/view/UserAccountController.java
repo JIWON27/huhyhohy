@@ -20,7 +20,6 @@ import javax.validation.Valid;
 
 @Controller
 @RequiredArgsConstructor
-@Slf4j
 public class UserAccountController {
   // 회원 계정 관련 컨트롤러
   private final UserService userService;
@@ -73,6 +72,6 @@ public class UserAccountController {
     if (session != null) {
       session.invalidate();
     }
-    return "redirect:/";
+    return "redirect:/crews";
   }
 }

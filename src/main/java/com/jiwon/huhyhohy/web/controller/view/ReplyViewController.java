@@ -3,19 +3,26 @@ package com.jiwon.huhyhohy.web.controller.view;
 import com.jiwon.huhyhohy.domain.user.User;
 import com.jiwon.huhyhohy.service.BoardService;
 import com.jiwon.huhyhohy.service.ReplyService;
+import com.jiwon.huhyhohy.service.UserService;
+import com.jiwon.huhyhohy.web.dto.board.BoardResponseDto;
+import com.jiwon.huhyhohy.web.dto.reply.ReplyResponseDto;
 import com.jiwon.huhyhohy.web.dto.reply.ReplySaveRequestDto;
 import com.jiwon.huhyhohy.web.dto.reply.ReplyUpdateRequestDto;
+import com.jiwon.huhyhohy.web.dto.user.UserResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpSession;
+import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
 public class ReplyViewController {
   private final ReplyService replyService;
   private final BoardService boardService;
+  private final UserService userService;
 
   // 댓글 등록
   @PostMapping("/boards/reply/{boardId}")
@@ -41,8 +48,13 @@ public class ReplyViewController {
     return "redirect:/boards/"+boardId;
   }
   // 댓글 조회 - "내가 쓴 댓글 보기"를 클릭한 경우
-  @GetMapping("/my-page/replies")
-  public String replies(){
-    return null;
+  @GetMapping("/reply/myReplies")
+  public String replies(RedirectAttributes redirectAttributes, HttpSession session){
+    User user = (User)session.getAttribute("loginUser");
+    UserResponseDto loginUser = userService.findByNickname(user.getNickname());
+
+    List<BoardResponseDto> CommentedBoards = replyService.findMyReplies(user.getNickname()); // 댓글 단 글
+    redirectAttributes.addFlashAttribute("commentedBoards", CommentedBoards);
+    return "redirect:/my-page";
   }
 }

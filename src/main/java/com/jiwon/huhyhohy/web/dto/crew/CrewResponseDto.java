@@ -26,6 +26,7 @@ public class CrewResponseDto {
   private boolean isClosed;
   private Banner banner;
   private List<UserResponseDto> users;
+  private int likeCnt;
 
   public CrewResponseDto(Crew crew) {
     this.id = crew.getId();
@@ -40,6 +41,7 @@ public class CrewResponseDto {
     this.isPublished = crew.isPublished();
     this.isClosed = crew.isClosed();
     this.banner = crew.getBanner();
+    this.likeCnt = crew.getLikes().size();
     this.users = crew.getUsers().stream().map(UserResponseDto::new).collect(Collectors.toList());
   }
 }

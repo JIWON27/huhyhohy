@@ -10,6 +10,7 @@ import com.jiwon.huhyhohy.web.dto.reply.ReplySaveRequestDto;
 import com.jiwon.huhyhohy.web.dto.reply.ReplyUpdateRequestDto;
 import com.jiwon.huhyhohy.web.dto.user.UserResponseDto;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -17,12 +18,15 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
+@Slf4j
 public class BoardViewController {
 
   private final BoardService boardService;
@@ -95,6 +99,17 @@ public class BoardViewController {
                        @ModelAttribute BoardUpdateRequestDto boardUpdateRequestDto) throws IOException {
     boardService.update(id, boardUpdateRequestDto);
     return "redirect:/boards/"+id;
+  }
+
+  // 내가 쓴 게시물
+  @GetMapping("boards/myBoards")
+  public String myBoards(RedirectAttributes redirectAttributes, HttpSession session){
+    User user = (User)session.getAttribute("loginUser");
+    UserResponseDto loginUser = userService.findByNickname(user.getNickname());
+
+    List<BoardResponseDto> myBoards = boardService.findMyBoards(user.getNickname());
+    redirectAttributes.addFlashAttribute("myBoards", myBoards);
+    return "redirect:/my-page";
   }
 
 }

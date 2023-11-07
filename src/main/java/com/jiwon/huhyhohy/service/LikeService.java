@@ -9,15 +9,16 @@ import com.jiwon.huhyhohy.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
-@Slf4j
 public class LikeService {
   private final LikeRepository likeRepository;
   private final CrewRepository crewRepository;
   private final UserRepository userRepository;
 
+  @Transactional
   public void likeCrew(Long crewId, String nickname){
     User user = userRepository.findUserByNickname(nickname).orElseThrow(IllegalArgumentException::new);
     Crew crew = crewRepository.findById(crewId).orElseThrow(IllegalArgumentException::new);

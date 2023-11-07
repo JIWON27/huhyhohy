@@ -38,10 +38,6 @@ public class Crew extends BaseTimeEntity {
   @OneToOne(mappedBy = "crew", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
   private Banner banner; //크루 배너 이미지
 
-  @OneToMany(mappedBy = "crew", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE) // 크루이 삭제되면 댓글 모두 삭제
-  @OrderBy("createdDate")
-  private List<Meeting> meetings = new ArrayList<>();
-
   @Lob // varchar보다 클 경우 사용하는 어노테이션
   private String description; // 항해 목적
 

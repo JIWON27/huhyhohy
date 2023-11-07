@@ -12,15 +12,18 @@
       <ul><a href="/crews">크루 화면</a></ul>
     </div>
 
-    <div class="right-section">
-      <button type="submit" th:onclick="|location.href='@{/logout}'|" th:if="${loginUser != null}">로그아웃</button>
-    </div>
+    <form th:action="@{/logout}" th:method="post" th:if="${loginUser != null}">
+      <button type="submit">로그아웃</button>
+    </form>
   </header>
+
   <div id="container">
     <div class="user">
       <img id="profile" th:src="|/profile/profile.png|" alt="프로필 사진" th:if="${loginUser.profile == null}">
       <img th:src="|/profile/${loginUser.profile.getStoreFilename()}|" th:if="${loginUser.profile != null}"/>
       <p th:text="${loginUser.nickname}"></p>
+
+      <button id="profileChangeBtn">프로필 수정</button>
 
       <!--프로필 변경 폼-->
       <form id="profileForm" th:action="@{/profile/update}" th:object="${profileUpdateDto}"
@@ -32,12 +35,22 @@
         <!--글 등록 버튼-->
         <button type="submit">변경</button>
         <button type="submit" th:if="${loginUser.profile != null}">삭제</button>
-
       </form>
 
-      <button id="profileChangeBtn">프로필 수정</button>
-      <button>내가 쓴 게시물 보기</button>
-      <button>내가 쓴 댓글 보기</button>
+      <button type="button" th:onclick="|location.href='@{/boards/myBoards}'|">내가 쓴 게시물</button>
+
+      <div id="myBoard">
+        <div th:each="board : ${myBoards}">
+          <a th:href="@{/boards/{id}(id=${board.id})}" th:text="${board.title}"></a>
+        </div>
+      </div>
+
+      <button type="button" th:onclick="|location.href='@{/reply/myReplies}'|">댓글 단 글</button>
+      <div id="myReplies">
+        <div th:each="board : ${commentedBoards}">
+          <a th:href="@{/boards/{id}(id=${board.id})}" th:text="${board.title}"></a>
+        </div>
+      </div>
       <button>비밀번호 수정</button>
       <button>회원 탈퇴</button>
     </div>
@@ -47,6 +60,8 @@
       <div class="crew-info">
         <div th:each="crew : ${leaderCrew}">
           <a th:href="@{/crews/{id}(id=${crew.id})}" th:text="${crew.name}"></a>
+          <img class="crew-banner" th:src="|/banner/banner.jpg|" alt="배너 사진" th:if="${crew.banner == null}">
+          <img th:src="|/banner/${crew.banner.getStoreFilename()}|" th:if="${crew.banner != null}"/>
         </div>
       </div>
 
@@ -55,6 +70,8 @@
         <div th:each="crew : ${joinCrews}">
           <p th:if="${crew.isClosed()}">활동 종료</p>
           <a th:href="@{/crews/{id}(id=${crew.id})}" th:text="${crew.name}"></a>
+          <img class="crew-banner" th:src="|/banner/banner.jpg|" alt="배너 사진" th:if="${crew.banner == null}">
+          <img th:src="|/banner/${crew.banner.getStoreFilename()}|" th:if="${crew.banner != null}"/>
         </div>
       </div>
 
@@ -62,6 +79,8 @@
       <div class="crew-info">
         <div th:each="crew : ${likeCrews}">
           <a th:href="@{/crews/{id}(id=${crew.id})}" th:text="${crew.name}"></a>
+          <img class="crew-banner" th:src="|/banner/banner.jpg|" alt="배너 사진" th:if="${crew.banner == null}">
+          <img th:src="|/banner/${crew.banner.getStoreFilename()}|" th:if="${crew.banner != null}"/>
         </div>
       </div>
 
