@@ -19,6 +19,7 @@ import java.io.IOException;
 @RestController
 @RequestMapping("/api/boards") // API 엔드포인트 루트 경로
 @RequiredArgsConstructor
+@CrossOrigin //디폴트값으로 다 됨
 public class BoardApiController {
 
   private final BoardService boardService;
