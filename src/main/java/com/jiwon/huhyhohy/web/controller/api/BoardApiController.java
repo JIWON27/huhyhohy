@@ -33,9 +33,7 @@ public class BoardApiController {
   }
 
   @GetMapping("/{id}")
-  public ResponseEntity<BoardResponseDto> getBoard(@PathVariable Long id, HttpSession session) {
-    User loginUser = (User) session.getAttribute("loginUser");
-    UserResponseDto user = userService.findByNickname(loginUser.getNickname());
+  public ResponseEntity<BoardResponseDto> getBoard(@PathVariable Long id) {
     BoardResponseDto board = boardService.findById(id);
 
     return ResponseEntity.ok(board);
