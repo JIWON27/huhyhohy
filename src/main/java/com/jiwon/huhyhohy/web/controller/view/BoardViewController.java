@@ -6,6 +6,7 @@ import com.jiwon.huhyhohy.service.UserService;
 import com.jiwon.huhyhohy.web.dto.board.BoardResponseDto;
 import com.jiwon.huhyhohy.web.dto.board.BoardSaveRequestDto;
 import com.jiwon.huhyhohy.web.dto.board.BoardUpdateRequestDto;
+import com.jiwon.huhyhohy.web.dto.board.PageBoardResponseDto;
 import com.jiwon.huhyhohy.web.dto.reply.ReplySaveRequestDto;
 import com.jiwon.huhyhohy.web.dto.reply.ReplyUpdateRequestDto;
 import com.jiwon.huhyhohy.web.dto.user.UserResponseDto;
@@ -70,7 +71,7 @@ public class BoardViewController {
   public String boards(Model model,
                        @PageableDefault(size = 5, sort = "createdDate",
                            direction = Sort.Direction.DESC) Pageable pageable) {
-    Page<BoardResponseDto> boards = boardService.findAll(pageable);
+    Page<PageBoardResponseDto> boards = boardService.findAll(pageable);
     model.addAttribute("boards", boards);
     return "board/main";
 
