@@ -33,10 +33,10 @@ public class BoardApiController {
     return ResponseEntity.status(HttpStatus.OK).build(); // OK - code 200
   }
 
-  @GetMapping("/{id}") // 상세조회
-  public ResponseEntity<BoardResponseDto> getBoard(@PathVariable Long id) {
+  @GetMapping("/{boardId}") // 상세조회
+  public ResponseEntity<BoardResponseDto> getBoard(@PathVariable Long boardId) {
 
-    BoardResponseDto board = boardService.findById(id);
+    BoardResponseDto board = boardService.findById(boardId);
     return ResponseEntity.status(HttpStatus.OK).body(board);
   }
 
@@ -54,6 +54,7 @@ public class BoardApiController {
     return ResponseEntity.status(HttpStatus.OK).build();
   }
 
+  // 로그인 한 사용자만 수정 버튼이 보인다는 가정하에, 그래서 userId가 path에 없음.
   @PutMapping("/{boardId}/edit")
   public ResponseEntity<Void> updateBoard(@PathVariable Long boardId,
                                           @RequestBody BoardUpdateRequestDto boardUpdateRequestDto)
