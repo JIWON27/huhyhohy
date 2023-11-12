@@ -29,8 +29,13 @@ public class Crew extends BaseTimeEntity {
   private User user; // 크루장
 
   private String name; // 크루이름
-  private boolean type; //  true-온라인, false-오프라인
-  private boolean cost; // true-유료탑승, false-무료탑승
+
+  @Enumerated(EnumType.STRING)
+  private CrewType crewType;
+
+  @Enumerated(EnumType.STRING)
+  private Cost cost; // true-유료탑승, false-무료탑승
+
   private boolean isRecruiting; // true - 모집중, false - 모집X,
   private boolean isPublished; // true - 공개O, false - 공개X
   private boolean isClosed; // true - 종료
@@ -101,8 +106,8 @@ public class Crew extends BaseTimeEntity {
 
   public void update(CrewUpdateRequestDto crewUpdateRequestDto){
     this.name = crewUpdateRequestDto.getName();
-    this.type = crewUpdateRequestDto.isType();
-    this.cost = crewUpdateRequestDto.isCost();
+    this.crewType = crewUpdateRequestDto.getCrewType();
+    this.cost = crewUpdateRequestDto.getCost();
     this.description = crewUpdateRequestDto.getDescription();
     this.wisher = crewUpdateRequestDto.getWisher();
     this.plan = crewUpdateRequestDto.getPlan();

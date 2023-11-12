@@ -16,8 +16,10 @@ public class CrewResponseDto {
   private Long id; // 크루 조회할 때 사용
   private String leader; // 크루장
   private String name; // 크루명
-  private boolean type; //  true-온라인, false-오프라인
-  private boolean cost; // true-유료탑승, false-무료탑승
+  //private boolean type; //  true-온라인, false-오프라인
+  //private boolean cost; // true-유료탑승, false-무료탑승
+  private String crewType;
+  private String cost;
   private String description; // 크루즈 설명
   private String wisher; // 원하는 선원
   private String plan; // 크루즈 설명
@@ -32,8 +34,8 @@ public class CrewResponseDto {
     this.id = crew.getId();
     this.leader = crew.getUser().getNickname();
     this.name = crew.getName();
-    this.type = crew.isType();
-    this.cost = crew.isCost();
+    this.crewType = crew.getCrewType().getType();
+    this.cost = crew.getCost().getCost();
     this.description = crew.getDescription();
     this.wisher = crew.getWisher();
     this.plan = crew.getPlan();
