@@ -41,11 +41,13 @@ public class BoardApiController {
   }
 
   @GetMapping //여기선 타이틀이랑 id, 글 작성자만 있는 BoardResponseDto를 반환해주기위해 PageBoardResponseDto 생성.
-  public ResponseEntity<Page<PageBoardResponseDto>> getAllBoards(
-      @PageableDefault(size = 5, sort = "createdDate", direction = Sort.Direction.DESC) Pageable pageable) {
+  public PageBoardResponseDto getAllBoards(
+      @RequestParam(value = "pageNo", defaultValue = "0", required = false) int pageNo,
+      @RequestParam(value = "pageSize", defaultValue = "5", required = false) int pageSize,
+      @RequestParam(value = "sortBy", defaultValue = "createdDate", required = false) String sortBy) {
 
-    Page<PageBoardResponseDto> boards = boardService.findAll(pageable);
-    return ResponseEntity.status(HttpStatus.OK).body(boards);
+    PageBoardResponseDto boards = boardService.findAll(pageNo, pageSize, sortBy);
+    return boards;
   }
 
   @DeleteMapping("/{boardId}")

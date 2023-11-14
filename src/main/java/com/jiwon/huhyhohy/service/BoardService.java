@@ -71,9 +71,23 @@ public class BoardService {
     return boards;
   }
   // 게시판 조회 - 전체, 페이징 적용 -
-  public Page<PageBoardResponseDto> findAll(Pageable pageable) {
-    Page<PageBoardResponseDto> boards = boardRepository.findAll(pageable).map(PageBoardResponseDto::new); // 이렇게 바로 map()해도 되나?
-    return boards;
+  public PageBoardResponseDto findAll(int pageNo, int pageSize, String sortBy) {
+    Pageable pageable = PageRequest.of(pageNo, pageSize, Sort.by(sortBy).descending());
+    Page<Board> pageBoards = boardRepository.findAll(pageable);
+
+    List<Board> pageContent = pageBoards.getContent();
+
+    List<BoardResponseDto> content = pageContent.stream().map(BoardResponseDto::new).collect(Collectors.toList());
+
+    return PageBoardResponseDto.builder()
+        .content(content)
+        .pageNo(pageNo)
+        .pageSize(pageSize)
+        .totalElements(pageBoards.getTotalElements())
+        .totalPages(pageBoards.getTotalPages())
+        .last(pageBoards.isLast())
+        .first(pageBoards.isFirst())
+        .build();
   }
   // 회원 삭제
   public void delete(Long id){

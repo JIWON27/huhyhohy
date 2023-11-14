@@ -71,8 +71,8 @@ public class BoardViewController {
   public String boards(Model model,
                        @PageableDefault(size = 5, sort = "createdDate",
                            direction = Sort.Direction.DESC) Pageable pageable) {
-    Page<PageBoardResponseDto> boards = boardService.findAll(pageable);
-    model.addAttribute("boards", boards);
+    //Page<PageBoardResponseDto> boards = boardService.findAll(pageable);
+    //model.addAttribute("boards", boards);
     return "board/main";
 
   }
