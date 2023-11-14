@@ -1,6 +1,7 @@
 package com.jiwon.huhyhohy.service;
 
 import com.jiwon.huhyhohy.domain.Like;
+import com.jiwon.huhyhohy.domain.crew.Category;
 import com.jiwon.huhyhohy.domain.crew.Crew;
 import com.jiwon.huhyhohy.domain.user.User;
 import com.jiwon.huhyhohy.repository.CrewRepository;
@@ -73,12 +74,29 @@ public class CrewService {
         .first(crewsPage.isFirst())
         .build();
   }
-  // 크루 전체 조회
+  // 크루 전체 조회 - API -> 약간 코드 중복이 많다. 어쩌지?
+  public PageCrewResponseDto findAllByCategory(int pageNo, int pageSize, String sortBy, String category) {
+    Pageable pageable = PageRequest.of(pageNo, pageSize, Sort.by(sortBy).descending());
+    Page<Crew> crewsPage = crewRepository.findAllByCategory(Category.fromString(category), pageable);
+
+    List<Crew> crewsContent = crewsPage.getContent();
+    List<CrewResponseDto> crews = crewsContent.stream().map(CrewResponseDto::new).collect(Collectors.toList());
+
+    return PageCrewResponseDto.builder()
+        .content(crews)
+        .pageNo(pageNo)
+        .pageSize(pageSize)
+        .totalElements(crewsPage.getTotalElements())
+        .last(crewsPage.isLast())
+        .first(crewsPage.isFirst())
+        .build();
+  }
+  // 크루 전체 조회 - MVC
   public Page<CrewResponseDto> findAll(Pageable pageable) {
     Page<CrewResponseDto> crews = crewRepository.findAll(pageable).map(CrewResponseDto::new);
     return crews;
   }
-  // 크루 전체 조회 - hot 10 기준은... 1. 관심있어요가 많은 크루 순
+  // 크루 전체 조회 - hot 10 기준은 관심있어요가 많은 크루 순 - MVC
   public Page<CrewResponseDto> findHotCrews(Pageable pageable) {
     Page<CrewResponseDto> crews = crewRepository.findHotCrews(pageable).map(CrewResponseDto::new);
     return crews;

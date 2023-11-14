@@ -1,6 +1,7 @@
 package com.jiwon.huhyhohy;
 
 import com.jiwon.huhyhohy.domain.board.Board;
+import com.jiwon.huhyhohy.domain.crew.Category;
 import com.jiwon.huhyhohy.domain.crew.Cost;
 import com.jiwon.huhyhohy.domain.crew.Crew;
 import com.jiwon.huhyhohy.domain.crew.CrewType;
@@ -82,6 +83,7 @@ public class BlogApplication {
         .name("런닝 메이트")
         .crewType(CrewType.fromString("오프라인"))
         .cost(Cost.fromString("유료/무료 혼합"))
+        .category(Category.fromString("운동"))
         .isPublished(true)
         .isRecruiting(true)
         .isClosed(false)
@@ -96,6 +98,7 @@ public class BlogApplication {
         .name("먹부심")
         .crewType(CrewType.fromString("오프라인"))
         .cost(Cost.fromString("유료"))
+        .category(Category.fromString("모임"))
         .isPublished(true)
         .isRecruiting(true)
         .isClosed(false)
@@ -110,6 +113,7 @@ public class BlogApplication {
         .name("오버워치")
         .crewType(CrewType.fromString("온라인"))
         .cost(Cost.fromString("유료"))
+        .category(Category.fromString("게임"))
         .isPublished(true)
         .isRecruiting(true)
         .isClosed(false)
@@ -124,6 +128,7 @@ public class BlogApplication {
         .name("여행 가자!")
         .crewType(CrewType.fromString("오프라인"))
         .cost(Cost.fromString("유료"))
+        .category(Category.fromString("여행"))
         .isPublished(true)
         .isRecruiting(true)
         .isClosed(false)
@@ -139,6 +144,7 @@ public class BlogApplication {
         .name("Spring 스터디")
         .crewType(CrewType.fromString("온/오프 혼합"))
         .cost(Cost.fromString("무료"))
+        .category(Category.fromString("스터디"))
         .isPublished(true)
         .isRecruiting(true)
         .isClosed(false)

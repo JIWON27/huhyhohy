@@ -19,6 +19,7 @@ public class CrewResponseDto {
   private String name; // 크루명
   private String crewType;
   private String cost;
+  private String category;
   private String description; // 크루즈 설명
   private String wisher; // 원하는 선원
   private String plan; // 크루즈 설명
@@ -35,7 +36,8 @@ public class CrewResponseDto {
     this.leader = crew.getUser().getNickname();
     this.name = crew.getName();
     this.crewType = crew.getCrewType().getType();
-    this.cost = crew.getCost().getCost();
+    this.cost = crew.getCost().getCost(); // Crew entity로 enum 타입 cost 가져오고 cost의 String값 가져오는 코드
+    this.category = crew.getCategory().getCategory();
     this.description = crew.getDescription();
     this.wisher = crew.getWisher();
     this.plan = crew.getPlan();

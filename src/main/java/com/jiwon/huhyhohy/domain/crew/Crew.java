@@ -34,7 +34,10 @@ public class Crew extends BaseTimeEntity {
   private CrewType crewType;
 
   @Enumerated(EnumType.STRING)
-  private Cost cost; // true-유료탑승, false-무료탑승
+  private Cost cost;
+
+  @Enumerated(EnumType.STRING)
+  private Category category;
 
   private boolean isRecruiting; // true - 모집중, false - 모집X,
   private boolean isPublished; // true - 공개O, false - 공개X
@@ -103,9 +106,11 @@ public class Crew extends BaseTimeEntity {
   }
 
   public void update(CrewUpdateRequestDto crewUpdateRequestDto){
+    // 수정하지 않은 부분들은 이전의 입력값들이 넘어오게 해야함.
     this.name = crewUpdateRequestDto.getName();
     this.crewType = crewUpdateRequestDto.getCrewType();
     this.cost = crewUpdateRequestDto.getCost();
+    this.category = crewUpdateRequestDto.getCategory();
     this.description = crewUpdateRequestDto.getDescription();
     this.wisher = crewUpdateRequestDto.getWisher();
     this.plan = crewUpdateRequestDto.getPlan();
