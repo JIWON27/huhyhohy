@@ -27,5 +27,4 @@ public class Like {
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "crew_id")
   private Crew crew;
-
 }

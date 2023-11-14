@@ -21,9 +21,9 @@ public class CrewUpdateRequestDto {
   private String plan; // 크루즈 설명
 
   public CrewType getCrewType() {
-    return CrewType.valueOf(crewType); // String -> Enum
+    return CrewType.fromString(crewType); // String -> Enum
   }
   public Cost getCost() {
-    return Cost.valueOf(cost); // String -> Enum
+    return Cost.fromString(cost); // String -> Enum
   }
 }

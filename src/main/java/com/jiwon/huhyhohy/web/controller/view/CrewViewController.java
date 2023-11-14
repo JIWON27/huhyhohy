@@ -39,7 +39,7 @@ public class CrewViewController {
   public String crewSave(@ModelAttribute CrewSaveRequestDto crewSaveRequestDto,
                          HttpSession session) {
     User loginUser = (User) session.getAttribute("loginUser");
-    Long id = crewService.save(crewSaveRequestDto, loginUser.getNickname());
+    Long id = crewService.save(crewSaveRequestDto, loginUser.getId());
     return "redirect:/crews/" + id;
   }
 
@@ -53,7 +53,6 @@ public class CrewViewController {
 
     model.addAttribute("loginUser", loginUser);
     model.addAttribute("crewResponseDto", crewResponseDto);
-    log.info("members={}", crewResponseDto.getUsers().size());
     return "crew/intro";
   }
 
@@ -79,11 +78,11 @@ public class CrewViewController {
   }
 
   // 크루 참가 신청 -> 관심있어요 삭제
-  @GetMapping("/crews/{id}/join")
-  public String joinCrew(HttpSession session, @PathVariable Long id) {
+  @GetMapping("/crews/{crewId}/join")
+  public String joinCrew(HttpSession session, @PathVariable Long crewId) {
     User loginUser = (User) session.getAttribute("loginUser");
-    crewService.addUser(id, loginUser.getNickname());
-    return "redirect:/crews/" + id;
+    crewService.addUser(crewId, loginUser.getNickname());
+    return "redirect:/crews/" + crewId;
   }
 
   // 크루 탈퇴

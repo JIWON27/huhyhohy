@@ -6,6 +6,7 @@ import com.jiwon.huhyhohy.web.dto.user.UserResponseDto;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -16,8 +17,6 @@ public class CrewResponseDto {
   private Long id; // 크루 조회할 때 사용
   private String leader; // 크루장
   private String name; // 크루명
-  //private boolean type; //  true-온라인, false-오프라인
-  //private boolean cost; // true-유료탑승, false-무료탑승
   private String crewType;
   private String cost;
   private String description; // 크루즈 설명
@@ -29,6 +28,7 @@ public class CrewResponseDto {
   private Banner banner;
   private List<UserResponseDto> users;
   private int likeCnt;
+  private LocalDateTime createdDate;
 
   public CrewResponseDto(Crew crew) {
     this.id = crew.getId();
@@ -45,5 +45,6 @@ public class CrewResponseDto {
     this.banner = crew.getBanner();
     this.likeCnt = crew.getLikes().size();
     this.users = crew.getUsers().stream().map(UserResponseDto::new).collect(Collectors.toList());
+    this.createdDate = crew.getCreatedDate();
   }
 }

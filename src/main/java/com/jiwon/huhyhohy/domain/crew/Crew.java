@@ -52,9 +52,6 @@ public class Crew extends BaseTimeEntity {
   @Lob // varchar보다 클 경우 사용하는 어노테이션
   private String plan; // 크루즈 설명
 
-  @OneToMany(mappedBy = "crew")
-  private Set<CrewTag> tags = new HashSet<>(); // tag를 중복으로 가질 수 없으니 Set 자료형으로 함.
-
   @ManyToMany// 크루원
   @JoinTable(
       name = "user_crew",
@@ -62,6 +59,7 @@ public class Crew extends BaseTimeEntity {
       inverseJoinColumns = @JoinColumn(name = "user_id")
   )
   private List<User> users = new ArrayList<>();
+
 
   @OneToMany(mappedBy = "crew")
   private List<Like> likes = new ArrayList<>();
