@@ -15,6 +15,7 @@ public class CrewUpdateRequestDto {
   private String name; // 크루이름
   private String crewType;
   private String cost;
+  private int capacity;
   private String category;
   private String description; // 크루즈 설명
   private String wisher; // 원하는 선원

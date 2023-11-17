@@ -81,7 +81,7 @@ public class CrewViewController {
   @GetMapping("/crews/{crewId}/join")
   public String joinCrew(HttpSession session, @PathVariable Long crewId) {
     User loginUser = (User) session.getAttribute("loginUser");
-    crewService.addUser(crewId, loginUser.getNickname());
+    //crewService.addUser(crewId, loginUser.getNickname());
     return "redirect:/crews/" + crewId;
   }
 

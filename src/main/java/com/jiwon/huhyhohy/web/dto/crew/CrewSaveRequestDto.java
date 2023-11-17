@@ -17,6 +17,7 @@ public class CrewSaveRequestDto {
   private String crewType;
   private String cost;
   private String category;
+  private int capacity;
   private String description; // 크루즈 설명
   private String wisher; // 원하는 선원
   private String plan; // 크루즈 설명
@@ -26,6 +27,7 @@ public class CrewSaveRequestDto {
         .name(name)
         .crewType(getCrewType())
         .cost(getCost())
+        .capacity(capacity)
         .category(getCategory())
         .wisher(wisher)
         .plan(plan)

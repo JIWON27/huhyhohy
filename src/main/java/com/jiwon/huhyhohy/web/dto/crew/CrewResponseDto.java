@@ -23,11 +23,12 @@ public class CrewResponseDto {
   private String description; // 크루즈 설명
   private String wisher; // 원하는 선원
   private String plan; // 크루즈 설명
+  private int capacity; // 인원수
   private boolean isRecruit; // true - 모집중, false - 모집X
   private boolean isPublished; // true - 공개O, false - 공개X
   private boolean isClosed;
   private Banner banner;
-  private List<UserResponseDto> users;
+ // private List<UserResponseDto> users; -> Enrollment 엔티티를 참고해서 크루에 속한 회원을 가져오도록 하겟음.
   private int likeCnt;
   private LocalDateTime createdDate;
 
@@ -41,12 +42,13 @@ public class CrewResponseDto {
     this.description = crew.getDescription();
     this.wisher = crew.getWisher();
     this.plan = crew.getPlan();
+    this.capacity = crew.getCapacity();
     this.isRecruit = crew.isRecruiting();
     this.isPublished = crew.isPublished();
     this.isClosed = crew.isClosed();
     this.banner = crew.getBanner();
     this.likeCnt = crew.getLikes().size();
-    this.users = crew.getUsers().stream().map(UserResponseDto::new).collect(Collectors.toList());
+   // this.users = crew.getUsers().stream().map(UserResponseDto::new).collect(Collectors.toList());
     this.createdDate = crew.getCreatedDate();
   }
 }

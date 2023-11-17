@@ -2,16 +2,13 @@ package com.jiwon.huhyhohy.domain.crew;
 
 import com.jiwon.huhyhohy.domain.BaseTimeEntity;
 import com.jiwon.huhyhohy.domain.Like;
-import com.jiwon.huhyhohy.domain.tag.CrewTag;
 import com.jiwon.huhyhohy.domain.user.User;
 import com.jiwon.huhyhohy.web.dto.crew.CrewUpdateRequestDto;
 import lombok.*;
 
 import javax.persistence.*;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -38,6 +35,9 @@ public class Crew extends BaseTimeEntity {
 
   @Enumerated(EnumType.STRING)
   private Category category;
+
+  // 인원수 -> 인원수 = 회원수이면 프론트에서 크루 가입 버튼 안보이게하기. 그리고 isRecruiting false로 설정하 -> 어떻게?
+  private int capacity;
 
   private boolean isRecruiting; // true - 모집중, false - 모집X,
   private boolean isPublished; // true - 공개O, false - 공개X

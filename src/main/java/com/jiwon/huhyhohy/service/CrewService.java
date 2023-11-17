@@ -11,8 +11,8 @@ import com.jiwon.huhyhohy.web.dto.crew.CrewResponseDto;
 import com.jiwon.huhyhohy.web.dto.crew.CrewSaveRequestDto;
 import com.jiwon.huhyhohy.web.dto.crew.CrewUpdateRequestDto;
 import com.jiwon.huhyhohy.web.dto.crew.PageCrewResponseDto;
+import com.jiwon.huhyhohy.web.dto.user.UserResponseDto;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -30,6 +30,7 @@ public class CrewService {
   private final CrewRepository crewRepository;
   private final UserRepository userRepository;
   private final LikeRepository likeRepository; // 크루 참가하면 관심있어요 삭제
+  private final EnrollmentService enrollmentService;
 
   // 크루 저장
   public Long save(CrewSaveRequestDto crewSaveRequestDto, Long userId){
@@ -112,22 +113,9 @@ public class CrewService {
     crewRepository.deleteById(id);
   }
 
-  // 크루 참가
   public void addUser(Long crewId, Long userId) {
     Crew crew = crewRepository.findById(crewId).orElseThrow(IllegalArgumentException::new);
     User user = userRepository.findById(userId).orElseThrow(IllegalArgumentException::new);
-
-    if (crew.isJoinable(user)) {
-      crew.addUser(user);
-      // 크루 가입하고 만약에 관심있어요 눌러져있으면 삭제
-      if (user.getLikes().stream().anyMatch(like -> like.getCrew().equals(crew))) {
-        likeRepository.deleteByUserAndCrew(user, crew);
-      }
-    }
-  }
-  public void addUser(Long crewId, String nickname) {
-    Crew crew = crewRepository.findById(crewId).orElseThrow(IllegalArgumentException::new);
-    User user = userRepository.findUserByNickname(nickname).orElseThrow(IllegalArgumentException::new);
 
     if (crew.isJoinable(user)) {
       crew.addUser(user);
@@ -137,6 +125,12 @@ public class CrewService {
         likeRepository.deleteByUserAndCrew(user, crew);
       }
     }
+    enrollmentService.enroll(user,crew);
+  }
+
+  // 크루 가입신청 수락
+  public void acceptEnrollment(Long acceptId) {
+    enrollmentService.acceptEnrollment(acceptId);
   }
   // API
   public void leaveCrew(Long crewId, Long userId){
@@ -192,4 +186,9 @@ public class CrewService {
   }
 
 
+  public List<UserResponseDto> getJoinUsers(Long crewId) {
+    Crew crew = crewRepository.findById(crewId).orElseThrow(IllegalArgumentException::new);
+    List<UserResponseDto> users = enrollmentService.getUsers(crewId);
+    return users;
+  }
 }
