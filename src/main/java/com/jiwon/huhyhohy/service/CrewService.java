@@ -7,6 +7,7 @@ import com.jiwon.huhyhohy.domain.user.User;
 import com.jiwon.huhyhohy.repository.CrewRepository;
 import com.jiwon.huhyhohy.repository.LikeRepository;
 import com.jiwon.huhyhohy.repository.UserRepository;
+import com.jiwon.huhyhohy.web.dto.EnrollmentResponseDto;
 import com.jiwon.huhyhohy.web.dto.crew.CrewResponseDto;
 import com.jiwon.huhyhohy.web.dto.crew.CrewSaveRequestDto;
 import com.jiwon.huhyhohy.web.dto.crew.CrewUpdateRequestDto;
@@ -113,24 +114,29 @@ public class CrewService {
     crewRepository.deleteById(id);
   }
 
-  public void addUser(Long crewId, Long userId) {
+  public void apply(Long crewId, Long userId) {
+    Crew crew = crewRepository.findById(crewId).orElseThrow(IllegalArgumentException::new);
+    User user = userRepository.findById(userId).orElseThrow(IllegalArgumentException::new);
+    if (crew.isJoinable(user)) {
+      enrollmentService.enroll(user,crew);
+    }
+  }
+
+  // 크루 가입신청 수락 -> 프론트에서 userId도 함께 URL에 넣어서 줄 수 있나..?
+  public void acceptEnrollment(Long crewId, Long acceptId, Long userId) {
     Crew crew = crewRepository.findById(crewId).orElseThrow(IllegalArgumentException::new);
     User user = userRepository.findById(userId).orElseThrow(IllegalArgumentException::new);
 
-    if (crew.isJoinable(user)) {
-      crew.addUser(user);
-      // user.getLikes().removeIf(like -> like.getCrew().equals(crew)); 이렇게 쓸 수도 있음. removeIf() -> Java8
-      // 크루 가입하고 만약에 관심있어요 눌러져있으면 삭제
-      if (user.getLikes().stream().anyMatch(like -> like.getCrew().equals(crew))) {
-        likeRepository.deleteByUserAndCrew(user, crew);
-      }
-    }
-    enrollmentService.enroll(user,crew);
-  }
-
-  // 크루 가입신청 수락
-  public void acceptEnrollment(Long acceptId) {
     enrollmentService.acceptEnrollment(acceptId);
+    crew.addUser(user);
+    // 좋아요 취소하기 로직 해야함.
+    if (user.getLikes().stream().anyMatch(like -> like.getCrew().equals(crew))) {
+      likeRepository.deleteByUserAndCrew(user, crew);
+    }
+  }
+  public List<EnrollmentResponseDto> getApplyUsers(Long crewId){
+    List<EnrollmentResponseDto> crewEnrollments = enrollmentService.getApplyUsers(crewId);
+    return crewEnrollments;
   }
   // API
   public void leaveCrew(Long crewId, Long userId){
