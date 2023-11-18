@@ -10,6 +10,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import javax.xml.stream.events.Comment;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -31,6 +34,17 @@ public class Reply extends BaseTimeEntity {
   @JoinColumn(name = "board_id")
   private Board board;
 
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "parent_id")
+  private Reply parent;
+
+  // 이 변수명을 좀 검색해봤는데
+  // 댓글(comment)는 주로 게시된 글에 대한 답변이라는 의미로 사용되고
+  // 답글(reply)은 댓글에 대한 답변이라는 의미로 사용된다고 하네요
+  // 변수명의 변경이 조금 필요할 것 같아요
+  @OneToMany(mappedBy = "parent", orphanRemoval = true)
+  private List<Reply> children = new ArrayList<>();
+
   public void update(ReplyUpdateRequestDto updateRequestDto) {
     this.comment = updateRequestDto.getComment();
   }
@@ -38,6 +52,12 @@ public class Reply extends BaseTimeEntity {
   public void setUser(User user){
     this.user = user;
   }
+
+  public void updateParent(Reply parent){
+    this.parent = parent;
+    this.parent.getChildren().add(this);
+  }
+
   // 연관관계 편의 메서드
   public void setBoard(Board board){
     if(this.board != null) {

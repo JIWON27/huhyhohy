@@ -12,7 +12,7 @@ import lombok.Setter;
 @AllArgsConstructor
 public class ReplySaveRequestDto {
   private String comment;
-
+  private Long parentId;
   public Reply toEntity(){
     return Reply.builder()
         .comment(comment)

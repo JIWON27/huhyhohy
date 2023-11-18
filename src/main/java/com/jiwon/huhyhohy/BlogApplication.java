@@ -2,9 +2,11 @@ package com.jiwon.huhyhohy;
 
 import com.jiwon.huhyhohy.domain.board.Board;
 import com.jiwon.huhyhohy.domain.crew.Crew;
+import com.jiwon.huhyhohy.domain.reply.Reply;
 import com.jiwon.huhyhohy.domain.user.User;
 import com.jiwon.huhyhohy.repository.BoardRepository;
 import com.jiwon.huhyhohy.repository.CrewRepository;
+import com.jiwon.huhyhohy.repository.ReplyRepository;
 import com.jiwon.huhyhohy.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
@@ -22,6 +24,8 @@ public class BlogApplication {
   private BoardRepository boardRepository;
   @Autowired
   private CrewRepository crewRepository;
+  @Autowired
+  private ReplyRepository replyRepository;
 
   public static void main(String[] args) {
     SpringApplication.run(BlogApplication.class, args);
@@ -29,6 +33,7 @@ public class BlogApplication {
 
   @PostConstruct
   public void initData(){
+    // 유저 생성 ==============================
     User user1 = User.builder()
         .name("짱구")
         .nickname("짱구")
@@ -57,7 +62,9 @@ public class BlogApplication {
     userRepository.save(user2);
     userRepository.save(user3);
     userRepository.save(user4);
+    // =======================================
 
+    // 게시글 생성 ============================
     for(int i=1; i<9; i++){
       Board board = Board.builder()
           .title("님들아 질문있음.")
@@ -76,6 +83,31 @@ public class BlogApplication {
       boardRepository.save(board);
     }
 
+    Board board = Board.builder()
+            .title("댓글 생성 테스트 게시글")
+            .content("댓글이 정상적으로 생성되는지 확인하기 위한 게시글")
+            .user(user3)
+            .build();
+    boardRepository.save(board);
+
+    Reply reply = Reply.builder()
+            .comment("댓글이 정상적으로 생성되었습니다.")
+            .board(board)
+            .user(user1)
+            .build();
+    replyRepository.save(reply);
+
+    Reply reReply = Reply.builder()
+            .comment("대댓글이 정상적으로 생성되었습니다.")
+            .board(board)
+            .user(user3)
+            .parent(reply)
+            .build();
+    replyRepository.save(reReply);
+
+    // =======================================
+
+    // 크루 생성 ==============================
     Crew crew1 = Crew.builder()
         .name("런닝 메이트")
         .type(true)
@@ -146,6 +178,6 @@ public class BlogApplication {
         .build();
     crew5.setUser(user1);
     crewRepository.save(crew5);
+    // =======================================
   }
-
 }

@@ -32,6 +32,7 @@ public class ReplyViewController {
     replyService.save(boardId, loginUser.getNickname(), replySaveRequestDto);
     return "redirect:/boards/"+boardId;
   }
+
   // 댓글 삭제
   @DeleteMapping("/boards/reply/{replyId}")
   public String delete(@PathVariable Long replyId) {
