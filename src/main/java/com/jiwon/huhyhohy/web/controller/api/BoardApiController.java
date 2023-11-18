@@ -2,13 +2,16 @@ package com.jiwon.huhyhohy.web.controller.api;
 
 import com.jiwon.huhyhohy.domain.user.User;
 import com.jiwon.huhyhohy.service.BoardService;
-import com.jiwon.huhyhohy.service.UserService;
 import com.jiwon.huhyhohy.web.dto.board.BoardResponseDto;
 import com.jiwon.huhyhohy.web.dto.board.BoardSaveRequestDto;
 import com.jiwon.huhyhohy.web.dto.board.BoardUpdateRequestDto;
+import com.jiwon.huhyhohy.web.dto.board.PageBoardResponseDto;
 import com.jiwon.huhyhohy.web.dto.user.UserResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,48 +22,47 @@ import java.io.IOException;
 @RestController
 @RequestMapping("/api/boards") // API 엔드포인트 루트 경로
 @RequiredArgsConstructor
-@CrossOrigin //디폴트값으로 다 됨
+@CrossOrigin //디폴트값으로 다 됨 -> CORS 해결
 public class BoardApiController {
 
   private final BoardService boardService;
-  private final UserService userService;
-
-  @PostMapping("/create")
-  public ResponseEntity<Void> createBoard(@RequestBody BoardSaveRequestDto boardSaveRequestDto, HttpSession session) throws IOException {
-    User loginUser = (User) session.getAttribute("loginUser");
-    boardService.save(boardSaveRequestDto, loginUser.getNickname());
-    return ResponseEntity.status(HttpStatus.CREATED).build();
+  @PostMapping("/{userId}/form") // API URL 수정
+  public ResponseEntity<Void> createBoard(@RequestBody BoardSaveRequestDto boardSaveRequestDto,
+                                          @PathVariable Long userId) throws IOException {
+    boardService.save_api(boardSaveRequestDto, userId);
+    return ResponseEntity.status(HttpStatus.OK).build(); // OK - code 200
   }
 
-  @GetMapping("/{id}")
-  public ResponseEntity<BoardResponseDto> getBoard(@PathVariable Long id, HttpSession session) {
-    User loginUser = (User) session.getAttribute("loginUser");
-    UserResponseDto user = userService.findByNickname(loginUser.getNickname());
-    BoardResponseDto board = boardService.findById(id);
+  @GetMapping("/{boardId}") // 상세조회
+  public ResponseEntity<BoardResponseDto> getBoard(@PathVariable Long boardId) {
 
-    return ResponseEntity.ok(board);
+    BoardResponseDto board = boardService.findById(boardId);
+    return ResponseEntity.status(HttpStatus.OK).body(board);
   }
 
-  @GetMapping("/all")
-  public ResponseEntity<Page<BoardResponseDto>> getAllBoards(
+  @GetMapping //여기선 타이틀이랑 id, 글 작성자만 있는 BoardResponseDto를 반환해주기위해 PageBoardResponseDto 생성.
+  public PageBoardResponseDto getAllBoards(
       @RequestParam(value = "pageNo", defaultValue = "0", required = false) int pageNo,
-      @RequestParam(value = "pageSize", defaultValue = "3", required = false) int pageSize,
-      @RequestParam(value = "sortBy", defaultValue = "id", required = false) String sortBy){
-    Page<BoardResponseDto> boards = boardService.findAll(pageNo,pageSize,sortBy);
-    return new ResponseEntity<>(boards, HttpStatus.OK);
+      @RequestParam(value = "pageSize", defaultValue = "5", required = false) int pageSize,
+      @RequestParam(value = "sortBy", defaultValue = "createdDate", required = false) String sortBy) {
+
+    PageBoardResponseDto boards = boardService.findAll(pageNo, pageSize, sortBy);
+    return boards;
   }
 
-  @DeleteMapping("/{id}")
-  public ResponseEntity<Void> deleteBoard(@PathVariable Long id) {
-    boardService.delete(id);
-    return ResponseEntity.noContent().build();
+  @DeleteMapping("/{boardId}")
+  public ResponseEntity<Void> deleteBoard(@PathVariable Long boardId) {
+    boardService.delete(boardId);
+    return ResponseEntity.status(HttpStatus.OK).build();
   }
 
-  @PutMapping("/{id}/edit")
-  public ResponseEntity<Void> updateBoard(@PathVariable Long id,
-                                          @RequestBody BoardUpdateRequestDto boardUpdateRequestDto) throws IOException {
-    boardService.update(id, boardUpdateRequestDto);
-    return ResponseEntity.noContent().build();
+  // 로그인 한 사용자만 수정 버튼이 보인다는 가정하에, 그래서 userId가 path에 없음.
+  @PutMapping("/{boardId}/edit")
+  public ResponseEntity<Void> updateBoard(@PathVariable Long boardId,
+                                          @RequestBody BoardUpdateRequestDto boardUpdateRequestDto)
+      throws IOException {
+    boardService.update(boardId, boardUpdateRequestDto);
+    return ResponseEntity.status(HttpStatus.OK).build();
   }
 }
 
