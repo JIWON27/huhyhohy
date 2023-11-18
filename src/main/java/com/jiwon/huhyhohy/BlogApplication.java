@@ -1,7 +1,10 @@
 package com.jiwon.huhyhohy;
 
 import com.jiwon.huhyhohy.domain.board.Board;
+import com.jiwon.huhyhohy.domain.crew.Category;
+import com.jiwon.huhyhohy.domain.crew.Cost;
 import com.jiwon.huhyhohy.domain.crew.Crew;
+import com.jiwon.huhyhohy.domain.crew.CrewType;
 import com.jiwon.huhyhohy.domain.user.User;
 import com.jiwon.huhyhohy.repository.BoardRepository;
 import com.jiwon.huhyhohy.repository.CrewRepository;
@@ -78,8 +81,9 @@ public class BlogApplication {
 
     Crew crew1 = Crew.builder()
         .name("런닝 메이트")
-        .type(true)
-        .cost(true)
+        .crewType(CrewType.fromString("오프라인"))
+        .cost(Cost.fromString("유료/무료 혼합"))
+        .category(Category.fromString("운동"))
         .isPublished(true)
         .isRecruiting(true)
         .isClosed(false)
@@ -92,8 +96,9 @@ public class BlogApplication {
 
     Crew crew2 = Crew.builder()
         .name("먹부심")
-        .type(false)
-        .cost(true)
+        .crewType(CrewType.fromString("오프라인"))
+        .cost(Cost.fromString("유료"))
+        .category(Category.fromString("모임"))
         .isPublished(true)
         .isRecruiting(true)
         .isClosed(false)
@@ -106,8 +111,9 @@ public class BlogApplication {
 
     Crew crew3 = Crew.builder()
         .name("오버워치")
-        .type(true)
-        .cost(false)
+        .crewType(CrewType.fromString("온라인"))
+        .cost(Cost.fromString("유료"))
+        .category(Category.fromString("게임"))
         .isPublished(true)
         .isRecruiting(true)
         .isClosed(false)
@@ -120,8 +126,9 @@ public class BlogApplication {
 
     Crew crew4 = Crew.builder()
         .name("여행 가자!")
-        .type(false)
-        .cost(true)
+        .crewType(CrewType.fromString("오프라인"))
+        .cost(Cost.fromString("유료"))
+        .category(Category.fromString("여행"))
         .isPublished(true)
         .isRecruiting(true)
         .isClosed(false)
@@ -135,13 +142,14 @@ public class BlogApplication {
 
     Crew crew5 = Crew.builder()
         .name("Spring 스터디")
-        .type(true)
-        .cost(false)
+        .crewType(CrewType.fromString("온/오프 혼합"))
+        .cost(Cost.fromString("무료"))
+        .category(Category.fromString("스터디"))
         .isPublished(true)
         .isRecruiting(true)
         .isClosed(false)
         .wisher("Spring 깊게 스터디 하실 분들만 원합니다.")
-        .plan("1. 주 3회 19:00-21:00\"2. 필수 참석<\n3.zoom 또는 google meet으로 활동합니다.")
+        .plan("1. 주 3회 19:00-21:00\"2. 필수 참석<\n3.zoom 또는 구글밋으로 활동합니다.")
         .description("백엔드 프레임워크인 Spring 스터디이고, 백엔드 개발자 취업에 관해서 정보 공유하는 크루입니다.")
         .build();
     crew5.setUser(user1);

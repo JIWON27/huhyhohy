@@ -39,8 +39,8 @@
       <div class="crew-info">
         <a th:href="@{/crews/{crewId}(crewId=${crew.id})}" th:text="${crew.name}"></a><br>
         <span th:text="${crew.leader}"></span> <br>
-        <span th:text="${crew.type} ? '온라인 활동' : '오프라인 활동'"></span><br> <!--crew.type=true면 온라인-->
-        <span th:text="${crew.cost} ? '유료' : '무료'"></span><br> <!--crew.cost=true면 유료-->
+        <span th:text="${crew.crewType}" ></span><br>
+        <span th:text="${crew.cost}" ></span><br>
         <span th:text="${crew.likeCnt}"></span>
       </div>
     </div> <!--crew-->
@@ -60,8 +60,8 @@
         <div class="crew-info">
           <a th:href="@{/crews/{crewId}(crewId=${crew.id})}" th:text="${crew.name}"></a><br>
           <span th:text="${crew.leader}"></span> <br>
-          <span th:text="${crew.type} ? '온라인 활동' : '오프라인 활동'"></span><br> <!--crew.type=true면 온라인-->
-          <span th:text="${crew.cost} ? '유료' : '무료'"></span><br> <!--crew.cost=true면 유료-->
+          <span th:text="${crew.crewType}" ></span><br>
+          <span th:text="${crew.cost}" ></span><br>
           <span th:text="${crew.likeCnt}"></span>
         </div><!--crew-info-->
       </div> <!--crew-->
