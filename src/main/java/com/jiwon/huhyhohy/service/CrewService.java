@@ -191,10 +191,12 @@ public class CrewService {
     }
   }
 
-
-  public List<UserResponseDto> getJoinUsers(Long crewId) {
+  public List<UserResponseDto> getUsers(Long crewId) {
     Crew crew = crewRepository.findById(crewId).orElseThrow(IllegalArgumentException::new);
-    List<UserResponseDto> users = enrollmentService.getUsers(crewId);
+    List<UserResponseDto> users = crew.getUsers()
+        .stream()
+        .map(UserResponseDto::new)
+        .collect(Collectors.toList());
     return users;
   }
 }

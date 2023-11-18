@@ -1,5 +1,6 @@
 package com.jiwon.huhyhohy.web.dto.crew;
 
+import com.jiwon.huhyhohy.domain.Enrollment;
 import com.jiwon.huhyhohy.domain.crew.Banner;
 import com.jiwon.huhyhohy.domain.crew.Crew;
 import com.jiwon.huhyhohy.web.dto.user.UserResponseDto;
@@ -28,7 +29,7 @@ public class CrewResponseDto {
   private boolean isPublished; // true - 공개O, false - 공개X
   private boolean isClosed;
   private Banner banner;
- // private List<UserResponseDto> users; -> Enrollment 엔티티를 참고해서 크루에 속한 회원을 가져오도록 하겟음.
+ // private List<UserResponseDto> users; //-> Enrollment 엔티티를 참고해서 크루에 속한 회원을 가져오도록 하겟음.
   private int likeCnt;
   private LocalDateTime createdDate;
 
@@ -48,7 +49,7 @@ public class CrewResponseDto {
     this.isClosed = crew.isClosed();
     this.banner = crew.getBanner();
     this.likeCnt = crew.getLikes().size();
-   // this.users = crew.getUsers().stream().map(UserResponseDto::new).collect(Collectors.toList());
+    //this.users = crew.getUsers().stream().map(UserResponseDto::new).collect(Collectors.toList());
     this.createdDate = crew.getCreatedDate();
   }
 }
