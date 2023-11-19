@@ -1,13 +1,10 @@
 package com.jiwon.huhyhohy.web.dto.board;
 
-import com.jiwon.huhyhohy.domain.board.Board;
-import com.jiwon.huhyhohy.web.dto.crew.CrewResponseDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Data
@@ -22,5 +19,4 @@ public class PageBoardResponseDto {
   private int totalPages; // 페이지들 총 갯수
   private boolean first; // 마지막 페이지인지
   private boolean last; // 첫번째 페이지인지
-
 }

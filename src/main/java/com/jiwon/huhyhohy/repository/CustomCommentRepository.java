@@ -12,36 +12,38 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static com.jiwon.huhyhohy.domain.reply.QReply.reply;
+import static com.jiwon.huhyhohy.domain.comment.QComment.comment;
+
 
 @Repository
-public class CustomReplyRepository {
+public class CustomCommentRepository {
     private JPAQueryFactory queryFactory;
 
-    public CustomReplyRepository(EntityManager em) {
+    public CustomCommentRepository(EntityManager em) {
         this.queryFactory = new JPAQueryFactory(em);
     }
 
     public List<CommentResponseDto> findByBoard(Board board) {
-        List<Comment> replies =  queryFactory.selectFrom(reply)
-                .leftJoin(reply.parent)
+        List<Comment> comments =  queryFactory.selectFrom(comment)
+                .leftJoin(comment.parent)
                 .fetchJoin()
-                .where(reply.board.id.eq(board.getId()))
-                .orderBy(reply.parent.id.asc().nullsFirst(), reply.id.asc())
+                .where(comment.board.id.eq(board.getId()))
+                .orderBy(comment.parent.id.asc().nullsFirst(), comment.id.asc())
                 .fetch();
 
         List<CommentResponseDto> commentResponseDtos = new ArrayList<>();
         Map<Long, CommentResponseDto> replyMap = new HashMap<>();
 
-        replies.forEach(r -> {
-            CommentResponseDto commentResponseDto = new CommentResponseDto(r);
-            replyMap.put(r.getId(), commentResponseDto);
-            if(r.getParent() == null) {
-                commentResponseDtos.add(commentResponseDto);
-            } else {
-                replyMap.get(r.getParent().getId()).getReply().add(commentResponseDto);
-            }
-        });
+        comments.forEach(r -> {
+                    CommentResponseDto commentResponseDto = new CommentResponseDto(r);
+                    replyMap.put(r.getId(), commentResponseDto);
+                    if(r.getParent() == null) {
+                        commentResponseDtos.add(commentResponseDto);
+                    } else {
+                        replyMap.get(r.getParent().getId()).getReplies().add(commentResponseDto);
+                    }
+                });
+
         return commentResponseDtos;
     }
 }

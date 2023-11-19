@@ -1,22 +1,21 @@
-package com.jiwon.huhyhohy.web.dto;
+package com.jiwon.huhyhohy.web.dto.comment;
 
-import com.jiwon.huhyhohy.domain.reply.Comment;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import com.jiwon.huhyhohy.domain.comment.Comment;
+import lombok.*;
 
 @Getter
 @Setter
+@ToString
 @NoArgsConstructor
 @AllArgsConstructor
 public class CommentSaveRequestDto {
-  private String comment;
+  private String content;
   private Long parentId;
+  private String writer;
 
   public Comment toEntity(){
     return Comment.builder()
-        .comment(comment)
+        .content(content)
         .build();
   }
 }

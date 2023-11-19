@@ -1,13 +1,12 @@
-package com.jiwon.huhyhohy.web.dto.reply;
+package com.jiwon.huhyhohy.web.dto.comment;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @Getter @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString
 public class CommentUpdateRequestDto {
-  private String comment;
+  private String content;
+  private String writer;
 }

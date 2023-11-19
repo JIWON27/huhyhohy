@@ -1,6 +1,6 @@
-package com.jiwon.huhyhohy.web.dto.reply;
+package com.jiwon.huhyhohy.web.dto.comment;
 
-import com.jiwon.huhyhohy.domain.reply.Comment;
+import com.jiwon.huhyhohy.domain.comment.Comment;
 import com.jiwon.huhyhohy.web.dto.user.UserResponseDto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -15,14 +15,16 @@ import java.util.List;
 @AllArgsConstructor
 public class CommentResponseDto {
   private Long id;
-  private String comment;
+  private String content;
   private UserResponseDto user;
   private LocalDateTime createdDate;
+  private String deleteStatus;
   private List<CommentResponseDto> replies = new ArrayList<>();
 
   public CommentResponseDto(Comment comment) {
     this.id = comment.getId();
-    this.comment = comment.getComment();
+    this.content = comment.getContent();
+    this.deleteStatus = comment.getDeleteStatus().toString();
     this.user = new UserResponseDto(comment.getUser());
     this.createdDate = comment.getCreatedDate();
   }

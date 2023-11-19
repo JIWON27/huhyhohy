@@ -26,7 +26,7 @@ public class UserController {
   public String myPage(Model model, HttpSession session){
     User loginUser = (User) session.getAttribute("loginUser");
 
-    UserResponseDto user = userService.findByNickname(loginUser.getNickname());// 영속성 컨텍스트에 올리고
+    UserResponseDto user = userService.findByUserId(loginUser.getUserId());// 영속성 컨텍스트에 올리고
 
     model.addAttribute("loginUser", user);
 

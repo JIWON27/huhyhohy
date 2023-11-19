@@ -2,7 +2,7 @@ package com.jiwon.huhyhohy.domain.board;
 
 import com.jiwon.huhyhohy.domain.BaseTimeEntity;
 import com.jiwon.huhyhohy.domain.file.ImgFile;
-import com.jiwon.huhyhohy.domain.reply.Reply;
+import com.jiwon.huhyhohy.domain.comment.Comment;
 import com.jiwon.huhyhohy.domain.user.User;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -34,7 +34,7 @@ public class Board extends BaseTimeEntity {
 
   @OneToMany(mappedBy = "board", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE) // 글이 삭제되면 댓글 모두 삭제
   @OrderBy("createdDate")
-  private List<Reply> replies = new ArrayList<>();
+  private List<Comment> replies = new ArrayList<>();
 
   @OneToMany(mappedBy = "board",fetch = FetchType.LAZY, cascade = CascadeType.ALL)
   private List<ImgFile> imgFiles = new ArrayList<>(); // 나는 이미지 파일들만 올릴 수 있게해서 그냥 List<>만 구현

@@ -148,9 +148,9 @@ public class CrewService {
     }
   }
   // MVC
-  public void leaveCrew(Long crewId, String nickname){
+  public void leaveCrew(Long crewId, String userId){
     Crew crew = crewRepository.findById(crewId).orElseThrow(IllegalArgumentException::new);
-    User user = userRepository.findUserByNickname(nickname).orElseThrow(IllegalArgumentException::new);
+    User user = userRepository.findUserByUserId(userId).orElseThrow(IllegalArgumentException::new);
 
     if (crew.isMember(user)) {
       crew.removeUser(user);

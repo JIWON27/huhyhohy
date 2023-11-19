@@ -33,46 +33,46 @@
     </div>
     <hr>
     <!-- 댓글 영역 -->
-    <div class="reply-container">
+    <div class="comment-container">
       <!-- 댓글 입력 폼 -->
-      <form th:action="@{/boards/reply/{boardId}(boardId=${board.id})}" th:object="${replySaveRequestDto}" method="post">
+      <form th:action="@{/boards/comment/{boardId}(boardId=${board.id})}" th:object="${replySaveRequestDto}" method="post">
         <textarea rows="5" cols="50" th:field="*{comment}" placeholder="댓글을 입력해주세요."></textarea>
         <button type="submit">등록</button>
       </form>
 
-      <div class="reply" th:each="reply :${board.getReplies()} ">
+      <div class="comment" th:each="comment :${board.getReplies()} ">
         <!-- 댓글 수정 폼 -->
         <form class="edit-form" style="display: none"
-              th:action="@{/boards/edit/reply/{replyId}(replyId=${reply.id})}"
+              th:action="@{/boards/edit/comment/{replyId}(replyId=${comment.id})}"
               th:object="${replyUpdateRequestDto}" method="post">
           <textarea name="editedContent" rows="5" cols="50"
                     th:field="*{comment}" placeholder="수정할 댓글을 입력해주세요"></textarea>
           <button type="submit">저장</button>
         </form>
 
-        <p th:text="${reply.comment}"></p>
-        <p th:text="${reply.nickname}"></p>
-        <p th:text="${reply.lastModifiedDate}"></p>
-        <form th:action="@{/boards/reply/{replyId}(replyId=${reply.id})}" th:method="delete">
+        <p th:text="${comment.comment}"></p>
+        <p th:text="${comment.nickname}"></p>
+        <p th:text="${comment.lastModifiedDate}"></p>
+        <form th:action="@{/boards/comment/{replyId}(replyId=${comment.id})}" th:method="delete">
           <button
-              th:if="${reply.nickname != null && reply.nickname == loginUser.nickname}"
+              th:if="${comment.nickname != null && comment.nickname == loginUser.nickname}"
               type="submit">삭제
           </button>
           <button
-              th:if="${reply.nickname != null && reply.nickname == loginUser.nickname}"
+              th:if="${comment.nickname != null && comment.nickname == loginUser.nickname}"
               th:onclick="'toggleEditForm(this)'"
               type="button">수정
           </button>
         </form>
         <hr>
       </div>
-    </div><!-- reply-container -->
+    </div><!-- comment-container -->
 
   </div><!--container -->
   <script th:inline="javascript">
       function toggleEditForm(button) {
-          // Find the closest .reply container for the clicked button
-          var replyContainer = button.closest('.reply');
+          // Find the closest .comment container for the clicked button
+          var replyContainer = button.closest('.comment');
           // Find the edit form within the same container
           var editForm = replyContainer.querySelector('.edit-form');
 

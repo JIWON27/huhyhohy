@@ -33,11 +33,19 @@ public class UserService {
     User user = userRepository.findById(id).orElseThrow(()->new blogException("해당 회원은 존재하지 않습니다."));
     return new UserResponseDto(user);
   }
+
   // 회원 조회 - 단건
   public UserResponseDto findByNickname(String nickname){
     User user = userRepository.findUserByNickname(nickname).orElseThrow(()->new blogException("해당 회원은 존재하지 않습니다."));
     return new UserResponseDto(user);
   }
+
+  // 회원 조회 - 단건, UserId
+    public UserResponseDto findByUserId(String userId){
+        User user = userRepository.findUserByUserId(userId).orElseThrow(()->new blogException("해당 회원은 존재하지 않습니다."));
+        return new UserResponseDto(user);
+    }
+
   // 회원 조회 - 전체
   public List<UserResponseDto> findAll() {
     List<UserResponseDto> users = userRepository.findAll()
@@ -60,6 +68,10 @@ public class UserService {
     return user.getId();
   }
 
+  public boolean checkUserId(String userId){
+    return userRepository.existsUserByUserId(userId);
+  }
+
   public boolean checkEmail(String email){
     return userRepository.existsUserByEmail(email);
   }
@@ -68,8 +80,8 @@ public class UserService {
   }
 
   // 관심 있는 크루
-  public List<CrewResponseDto> LikeCrew(String nickname){
-    User user = userRepository.findUserByNickname(nickname)
+  public List<CrewResponseDto> LikeCrew(String userId){
+    User user = userRepository.findUserByUserId(userId)
         .orElseThrow(() -> new blogException("해당 회원은 존재하지 않습니다."));
 
     List<CrewResponseDto> crews = user.getLikes().stream()
@@ -78,8 +90,8 @@ public class UserService {
     return crews;
   }
   // 참여하고 있는 크루
-  public List<CrewResponseDto> joinCrew(String nickname){
-    User user = userRepository.findUserByNickname(nickname)
+  public List<CrewResponseDto> joinCrew(String userId){
+    User user = userRepository.findUserByUserId(userId)
         .orElseThrow(() -> new blogException("해당 회원은 존재하지 않습니다."));
 
     List<CrewResponseDto> crews = user.getCrews().stream()
@@ -88,8 +100,8 @@ public class UserService {
     return crews;
   }
   // 크루장인 크루
-  public List<CrewResponseDto> leaderCrew(String nickname){
-    User user = userRepository.findUserByNickname(nickname)
+  public List<CrewResponseDto> leaderCrew(String userId){
+    User user = userRepository.findUserByUserId(userId)
         .orElseThrow(() -> new blogException("해당 회원은 존재하지 않습니다."));
 
     List<CrewResponseDto> crews = user.getLeaderCrews().stream()
@@ -98,9 +110,10 @@ public class UserService {
         .collect(Collectors.toList());
     return crews;
   }
+
   // 활동종료 크루 (크루원일 때)
-  public List<CrewResponseDto> closeCrew(String nickname){
-    User user = userRepository.findUserByNickname(nickname)
+  public List<CrewResponseDto> closeCrew(String userId){
+    User user = userRepository.findUserByUserId(userId)
         .orElseThrow(() -> new blogException("해당 회원은 존재하지 않습니다."));
 
     List<CrewResponseDto> crews = user.getCrews().stream()

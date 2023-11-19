@@ -8,9 +8,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
 
-public interface ReplyRepository extends JpaRepository<Comment, Long> {
+public interface CommentRepository extends JpaRepository<Comment, Long> {
   Page<Comment> findAll(Pageable pageable);
-
 
   List<Comment> findByUser(User user); // 내가 쓴 댓글 보기
 }
