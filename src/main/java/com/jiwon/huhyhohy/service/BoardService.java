@@ -9,7 +9,6 @@ import com.jiwon.huhyhohy.web.dto.board.BoardResponseDto;
 import com.jiwon.huhyhohy.web.dto.board.BoardSaveRequestDto;
 import com.jiwon.huhyhohy.web.dto.board.BoardUpdateRequestDto;
 import com.jiwon.huhyhohy.web.dto.board.PageBoardResponseDto;
-import com.jiwon.huhyhohy.web.dto.user.UserResponseDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -35,8 +34,8 @@ public class BoardService {
 
   // 게시판 등록
   @Transactional
-  public Long save(BoardSaveRequestDto request, String nickname) throws IOException {
-    User user = userRepository.findUserByNickname(nickname).orElseThrow(IllegalArgumentException::new);
+  public Long save(BoardSaveRequestDto request, String userId) throws IOException {
+    User user = userRepository.findUserByUserId(userId).orElseThrow(IllegalArgumentException::new);
     Board board = request.toEntity(); // title, content
     board.setUser(user);
     ImgFileProcess(request, board);
@@ -47,7 +46,7 @@ public class BoardService {
   @Transactional
   public Long save_api(BoardSaveRequestDto request, Long userId) throws IOException {
     User user = userRepository.findById(userId).orElseThrow(IllegalArgumentException::new);
-    log.info("user={}", user.getName());
+    log.info("user={}", user.getUserId());
     Board board = request.toEntity(); // title, content
     board.setUser(user);
     ImgFileProcess(request, board);
@@ -113,8 +112,8 @@ public class BoardService {
   }
 
   // 사용자  쓴 게시물 보기
-  public List<BoardResponseDto> findMyBoards(String nickname){
-    User user = userRepository.findUserByNickname(nickname).orElseThrow(IllegalArgumentException::new);
+  public List<BoardResponseDto> findMyBoards(String userId){
+    User user = userRepository.findUserByUserId(userId).orElseThrow(IllegalArgumentException::new);
     List<Board> myBoards = boardRepository.findByUser(user);
     return myBoards.stream().map(BoardResponseDto::new).collect(Collectors.toList());
   }

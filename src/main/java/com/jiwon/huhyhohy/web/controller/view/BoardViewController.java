@@ -6,13 +6,11 @@ import com.jiwon.huhyhohy.service.UserService;
 import com.jiwon.huhyhohy.web.dto.board.BoardResponseDto;
 import com.jiwon.huhyhohy.web.dto.board.BoardSaveRequestDto;
 import com.jiwon.huhyhohy.web.dto.board.BoardUpdateRequestDto;
-import com.jiwon.huhyhohy.web.dto.board.PageBoardResponseDto;
-import com.jiwon.huhyhohy.web.dto.reply.ReplySaveRequestDto;
-import com.jiwon.huhyhohy.web.dto.reply.ReplyUpdateRequestDto;
+import com.jiwon.huhyhohy.web.dto.comment.CommentSaveRequestDto;
+import com.jiwon.huhyhohy.web.dto.comment.CommentUpdateRequestDto;
 import com.jiwon.huhyhohy.web.dto.user.UserResponseDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
@@ -55,13 +53,13 @@ public class BoardViewController {
   @GetMapping("/boards/{id}")
   public String boards(@PathVariable Long id, Model model, HttpSession session) {
     User loginUser = (User) session.getAttribute("loginUser");
-    UserResponseDto user = userService.findByNickname(loginUser.getNickname());
+    UserResponseDto user = userService.findByUserId(loginUser.getUserId());
 
     BoardResponseDto board = boardService.findById(id);
 
     model.addAttribute("loginUser", user);
-    model.addAttribute("replySaveRequestDto", new ReplySaveRequestDto()); // 댓글 입력
-    model.addAttribute("replyUpdateRequestDto", new ReplyUpdateRequestDto()); // 댓글 수정
+    model.addAttribute("commentSaveRequestDto", new CommentSaveRequestDto()); // 댓글 입력
+    model.addAttribute("commentUpdateRequestDto", new CommentUpdateRequestDto()); // 댓글 수정
 
     model.addAttribute("board", board); // 화면에 게시글 정보 뿌리기위해
     return "board/detailBoard";
@@ -106,11 +104,10 @@ public class BoardViewController {
   @GetMapping("boards/myBoards")
   public String myBoards(RedirectAttributes redirectAttributes, HttpSession session){
     User user = (User)session.getAttribute("loginUser");
-    UserResponseDto loginUser = userService.findByNickname(user.getNickname());
+    UserResponseDto loginUser = userService.findByUserId(user.getUserId());
 
-    List<BoardResponseDto> myBoards = boardService.findMyBoards(user.getNickname());
+    List<BoardResponseDto> myBoards = boardService.findMyBoards(user.getUserId());
     redirectAttributes.addFlashAttribute("myBoards", myBoards);
     return "redirect:/my-page";
   }
-
 }

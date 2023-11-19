@@ -58,15 +58,15 @@ public class FileService {
 
   // 프로필 이미지 변경
   @Transactional
-  public Profile transferProfile(MultipartFile profile, String nickname) throws IOException {
-    User user = userRepository.findUserByNickname(nickname).orElseThrow(IllegalArgumentException::new);
+  public Profile transferProfile(MultipartFile profile, String userId) throws IOException {
+    User user = userRepository.findUserByUserId(userId).orElseThrow(IllegalArgumentException::new);
     Profile profileImg = fileStore.profileImgStore(profile);
     user.updateProfile(profileImg);
     return profileImg;
   }
 
-  public void deleteBeforeProfile(String nickname) {
-    User user = userRepository.findUserByNickname(nickname).orElseThrow(IllegalArgumentException::new);
+  public void deleteBeforeProfile(String userId) {
+    User user = userRepository.findUserByUserId(userId).orElseThrow(IllegalArgumentException::new);
 
     if (user.getProfile() != null) {
       Profile profile = user.getProfile();

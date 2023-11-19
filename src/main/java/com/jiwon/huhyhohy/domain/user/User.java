@@ -19,8 +19,8 @@ import java.util.Objects;
 public class User extends BaseTimeEntity {
   @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
-  private String name; // 본명
-  private String nickname; // 별명
+  private String userId;
+  private String nickname;
   private String password;
   private String email;
 
@@ -57,11 +57,11 @@ public class User extends BaseTimeEntity {
     if (this == o) return true;
     if (o == null || getClass() != o.getClass()) return false;
     User user = (User) o;
-    return Objects.equals(getId(), user.getId()) && Objects.equals(getName(), user.getName()) && Objects.equals(getNickname(), user.getNickname()) && Objects.equals(getPassword(), user.getPassword()) && Objects.equals(getEmail(), user.getEmail());
+    return Objects.equals(getId(), user.getId()) && Objects.equals(getUserId(), user.getUserId()) && Objects.equals(getNickname(), user.getNickname()) && Objects.equals(getPassword(), user.getPassword()) && Objects.equals(getEmail(), user.getEmail());
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(getId(), getName(), getNickname(), getPassword(), getEmail());
+    return Objects.hash(getId(), getUserId(), getNickname(), getPassword(), getEmail());
   }
 }

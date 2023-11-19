@@ -14,7 +14,8 @@ import javax.validation.constraints.Pattern;
 public class UserSaveRequestDto {
 
   @NotBlank
-  private String name; // 본명
+  @Pattern(regexp = "^[a-z0-9_]{3,16}$")
+  private String userId;
 
   @NotBlank
   @Length(min = 2, max = 10)
@@ -33,7 +34,7 @@ public class UserSaveRequestDto {
 
   public User toEntity(){
       return User.builder()
-          .name(name)
+          .userId(userId)
           .nickname(nickname)
           .password(password)
           .email(email)

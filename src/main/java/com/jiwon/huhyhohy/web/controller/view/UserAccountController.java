@@ -6,7 +6,6 @@ import com.jiwon.huhyhohy.service.UserService;
 import com.jiwon.huhyhohy.web.dto.LoginDto;
 import com.jiwon.huhyhohy.web.dto.user.UserSaveRequestDto;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -40,6 +39,10 @@ public class UserAccountController {
     }
     // 문제는 이메일이 먼저 뜨고 닉네임이 그 다음에 뜸. 둘이 동시에 뜨지 않아서,, 어떻게 해야하지?
     // 우선 넘어감.
+    if (userService.checkUserId(requestDto.getUserId())){
+      bindingResult.rejectValue("nickname", null, "이미 사용중인 닉네임입니다.");
+      return "account/signup";
+    }
     if (userService.checkEmail(requestDto.getEmail())){
       bindingResult.rejectValue("email", null, "이미 사용중인 이메일입니다.");
       return "account/signup";

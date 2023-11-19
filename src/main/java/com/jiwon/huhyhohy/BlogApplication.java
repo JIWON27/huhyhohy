@@ -4,10 +4,12 @@ import com.jiwon.huhyhohy.domain.board.Board;
 import com.jiwon.huhyhohy.domain.crew.Category;
 import com.jiwon.huhyhohy.domain.crew.Cost;
 import com.jiwon.huhyhohy.domain.crew.Crew;
+import com.jiwon.huhyhohy.domain.comment.Comment;
 import com.jiwon.huhyhohy.domain.crew.CrewType;
 import com.jiwon.huhyhohy.domain.user.User;
 import com.jiwon.huhyhohy.repository.BoardRepository;
 import com.jiwon.huhyhohy.repository.CrewRepository;
+import com.jiwon.huhyhohy.repository.CommentRepository;
 import com.jiwon.huhyhohy.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
@@ -25,6 +27,8 @@ public class BlogApplication {
   private BoardRepository boardRepository;
   @Autowired
   private CrewRepository crewRepository;
+  @Autowired
+  private CommentRepository commentRepository;
 
   public static void main(String[] args) {
     SpringApplication.run(BlogApplication.class, args);
@@ -32,26 +36,27 @@ public class BlogApplication {
 
   @PostConstruct
   public void initData(){
+    // 유저 생성 ==============================
     User user1 = User.builder()
-        .name("짱구")
+        .userId("jjang")
         .nickname("짱구")
         .email("test@test.com")
         .password("asdwasd123!")
         .build();
     User user2 = User.builder()
-        .name("흰둥이")
+        .userId("whitedoong")
         .nickname("흰둥이")
         .email("white@test.com")
         .password("asdwasd123!")
         .build();
     User user3 = User.builder()
-        .name("철수")
+        .userId("ironman")
         .nickname("철수")
         .email("cheolsu@test.com")
         .password("asdwasd123!")
         .build();
     User user4 = User.builder()
-        .name("유리")
+        .userId("glass")
         .nickname("유리")
         .email("yuri@test.com")
         .password("asdwasd123!")
@@ -60,7 +65,9 @@ public class BlogApplication {
     userRepository.save(user2);
     userRepository.save(user3);
     userRepository.save(user4);
+    // =======================================
 
+    // 게시글 생성 ============================
     for(int i=1; i<9; i++){
       Board board = Board.builder()
           .title("님들아 질문있음.")
@@ -79,6 +86,31 @@ public class BlogApplication {
       boardRepository.save(board);
     }
 
+    Board board = Board.builder()
+            .title("댓글 생성 테스트 게시글")
+            .content("댓글이 정상적으로 생성되는지 확인하기 위한 게시글")
+            .user(user3)
+            .build();
+    boardRepository.save(board);
+
+    Comment comment = Comment.builder()
+            .content("댓글이 정상적으로 생성되었습니다.")
+            .board(board)
+            .user(user1)
+            .build();
+    commentRepository.save(comment);
+
+    Comment reply = Comment.builder()
+            .content("대댓글이 정상적으로 생성되었습니다.")
+            .board(board)
+            .user(user3)
+            .parent(comment)
+            .build();
+    commentRepository.save(reply);
+
+    // =======================================
+
+    // 크루 생성 ==============================
     Crew crew1 = Crew.builder()
         .name("런닝 메이트")
         .crewType(CrewType.fromString("오프라인"))
@@ -154,6 +186,6 @@ public class BlogApplication {
         .build();
     crew5.setUser(user1);
     crewRepository.save(crew5);
+    // =======================================
   }
-
 }

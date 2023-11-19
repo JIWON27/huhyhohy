@@ -45,7 +45,7 @@
         </div>
       </div>
 
-      <button type="button" th:onclick="|location.href='@{/reply/myReplies}'|">댓글 단 글</button>
+      <button type="button" th:onclick="|location.href='@{/comment/myReplies}'|">댓글 단 글</button>
       <div id="myReplies">
         <div th:each="board : ${commentedBoards}">
           <a th:href="@{/boards/{id}(id=${board.id})}" th:text="${board.title}"></a>

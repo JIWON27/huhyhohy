@@ -1,15 +1,11 @@
 package com.jiwon.huhyhohy.web.dto.crew;
 
-import com.jiwon.huhyhohy.domain.Enrollment;
 import com.jiwon.huhyhohy.domain.crew.Banner;
 import com.jiwon.huhyhohy.domain.crew.Crew;
-import com.jiwon.huhyhohy.web.dto.user.UserResponseDto;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Getter
 @NoArgsConstructor
