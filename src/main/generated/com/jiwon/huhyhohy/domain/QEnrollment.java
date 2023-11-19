@@ -11,16 +11,16 @@ import com.querydsl.core.types.dsl.PathInits;
 
 
 /**
- * QLike is a Querydsl query type for Like
+ * QEnrollment is a Querydsl query type for Enrollment
  */
 @Generated("com.querydsl.codegen.DefaultEntitySerializer")
-public class QLike extends EntityPathBase<Like> {
+public class QEnrollment extends EntityPathBase<Enrollment> {
 
-    private static final long serialVersionUID = -269738995L;
+    private static final long serialVersionUID = 184753914L;
 
     private static final PathInits INITS = PathInits.DIRECT2;
 
-    public static final QLike like = new QLike("like1");
+    public static final QEnrollment enrollment = new QEnrollment("enrollment");
 
     public final QBaseTimeEntity _super = new QBaseTimeEntity(this);
 
@@ -36,23 +36,23 @@ public class QLike extends EntityPathBase<Like> {
 
     public final com.jiwon.huhyhohy.domain.user.QUser user;
 
-    public QLike(String variable) {
-        this(Like.class, forVariable(variable), INITS);
+    public QEnrollment(String variable) {
+        this(Enrollment.class, forVariable(variable), INITS);
     }
 
-    public QLike(Path<? extends Like> path) {
+    public QEnrollment(Path<? extends Enrollment> path) {
         this(path.getType(), path.getMetadata(), PathInits.getFor(path.getMetadata(), INITS));
     }
 
-    public QLike(PathMetadata metadata) {
+    public QEnrollment(PathMetadata metadata) {
         this(metadata, PathInits.getFor(metadata, INITS));
     }
 
-    public QLike(PathMetadata metadata, PathInits inits) {
-        this(Like.class, metadata, inits);
+    public QEnrollment(PathMetadata metadata, PathInits inits) {
+        this(Enrollment.class, metadata, inits);
     }
 
-    public QLike(Class<? extends Like> type, PathMetadata metadata, PathInits inits) {
+    public QEnrollment(Class<? extends Enrollment> type, PathMetadata metadata, PathInits inits) {
         super(type, metadata, inits);
         this.crew = inits.isInitialized("crew") ? new com.jiwon.huhyhohy.domain.crew.QCrew(forProperty("crew"), inits.get("crew")) : null;
         this.user = inits.isInitialized("user") ? new com.jiwon.huhyhohy.domain.user.QUser(forProperty("user"), inits.get("user")) : null;

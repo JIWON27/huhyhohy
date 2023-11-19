@@ -40,13 +40,13 @@ public class QUser extends EntityPathBase<User> {
 
     public final ListPath<com.jiwon.huhyhohy.domain.Like, com.jiwon.huhyhohy.domain.QLike> likes = this.<com.jiwon.huhyhohy.domain.Like, com.jiwon.huhyhohy.domain.QLike>createList("likes", com.jiwon.huhyhohy.domain.Like.class, com.jiwon.huhyhohy.domain.QLike.class, PathInits.DIRECT2);
 
-    public final StringPath name = createString("name");
-
     public final StringPath nickname = createString("nickname");
 
     public final StringPath password = createString("password");
 
     public final QProfile profile;
+
+    public final StringPath userId = createString("userId");
 
     public QUser(String variable) {
         this(User.class, forVariable(variable), INITS);

@@ -26,10 +26,16 @@ public class QCrew extends EntityPathBase<Crew> {
 
     public final QBanner banner;
 
-    public final BooleanPath cost = createBoolean("cost");
+    public final NumberPath<Integer> capacity = createNumber("capacity", Integer.class);
+
+    public final EnumPath<Category> category = createEnum("category", Category.class);
+
+    public final EnumPath<Cost> cost = createEnum("cost", Cost.class);
 
     //inherited
     public final DateTimePath<java.time.LocalDateTime> createdDate = _super.createdDate;
+
+    public final EnumPath<CrewType> crewType = createEnum("crewType", CrewType.class);
 
     public final StringPath description = createString("description");
 
@@ -49,10 +55,6 @@ public class QCrew extends EntityPathBase<Crew> {
     public final StringPath name = createString("name");
 
     public final StringPath plan = createString("plan");
-
-    public final SetPath<com.jiwon.huhyhohy.domain.tag.CrewTag, com.jiwon.huhyhohy.domain.tag.QCrewTag> tags = this.<com.jiwon.huhyhohy.domain.tag.CrewTag, com.jiwon.huhyhohy.domain.tag.QCrewTag>createSet("tags", com.jiwon.huhyhohy.domain.tag.CrewTag.class, com.jiwon.huhyhohy.domain.tag.QCrewTag.class, PathInits.DIRECT2);
-
-    public final BooleanPath type = createBoolean("type");
 
     public final com.jiwon.huhyhohy.domain.user.QUser user;
 
