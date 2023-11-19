@@ -12,7 +12,6 @@
   <div class="board" th:each="board : ${boards}">
     <div class="board-body">
       <a th:href="@{/boards/{boardId}(boardId=${board.id})}"><h4 class="title" th:text="${board.title}"></h4></a>
-      <p class="content" th:text="${board.content}"></p> <!-- 나중에 텍스트....처리하는 css할려고함.-->
     </div>
     <hr>
     <div class="board-info">

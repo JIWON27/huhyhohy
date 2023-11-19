@@ -2,16 +2,13 @@ package com.jiwon.huhyhohy.domain.crew;
 
 import com.jiwon.huhyhohy.domain.BaseTimeEntity;
 import com.jiwon.huhyhohy.domain.Like;
-import com.jiwon.huhyhohy.domain.tag.CrewTag;
 import com.jiwon.huhyhohy.domain.user.User;
 import com.jiwon.huhyhohy.web.dto.crew.CrewUpdateRequestDto;
 import lombok.*;
 
 import javax.persistence.*;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -29,8 +26,19 @@ public class Crew extends BaseTimeEntity {
   private User user; // 크루장
 
   private String name; // 크루이름
-  private boolean type; //  true-온라인, false-오프라인
-  private boolean cost; // true-유료탑승, false-무료탑승
+
+  @Enumerated(EnumType.STRING)
+  private CrewType crewType;
+
+  @Enumerated(EnumType.STRING)
+  private Cost cost;
+
+  @Enumerated(EnumType.STRING)
+  private Category category;
+
+  // 인원수 -> 인원수 = 회원수이면 프론트에서 크루 가입 버튼 안보이게하기. 그리고 isRecruiting false로 설정하 -> 어떻게?
+  private int capacity;
+
   private boolean isRecruiting; // true - 모집중, false - 모집X,
   private boolean isPublished; // true - 공개O, false - 공개X
   private boolean isClosed; // true - 종료
@@ -47,9 +55,6 @@ public class Crew extends BaseTimeEntity {
   @Lob // varchar보다 클 경우 사용하는 어노테이션
   private String plan; // 크루즈 설명
 
-  @OneToMany(mappedBy = "crew")
-  private Set<CrewTag> tags = new HashSet<>(); // tag를 중복으로 가질 수 없으니 Set 자료형으로 함.
-
   @ManyToMany// 크루원
   @JoinTable(
       name = "user_crew",
@@ -57,6 +62,7 @@ public class Crew extends BaseTimeEntity {
       inverseJoinColumns = @JoinColumn(name = "user_id")
   )
   private List<User> users = new ArrayList<>();
+
 
   @OneToMany(mappedBy = "crew")
   private List<Like> likes = new ArrayList<>();
@@ -100,9 +106,11 @@ public class Crew extends BaseTimeEntity {
   }
 
   public void update(CrewUpdateRequestDto crewUpdateRequestDto){
+    // 수정하지 않은 부분들은 이전의 입력값들이 넘어오게 해야함.
     this.name = crewUpdateRequestDto.getName();
-    this.type = crewUpdateRequestDto.isType();
-    this.cost = crewUpdateRequestDto.isCost();
+    this.crewType = crewUpdateRequestDto.getCrewType();
+    this.cost = crewUpdateRequestDto.getCost();
+    this.category = crewUpdateRequestDto.getCategory();
     this.description = crewUpdateRequestDto.getDescription();
     this.wisher = crewUpdateRequestDto.getWisher();
     this.plan = crewUpdateRequestDto.getPlan();

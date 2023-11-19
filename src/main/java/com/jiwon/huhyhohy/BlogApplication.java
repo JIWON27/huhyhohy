@@ -1,12 +1,15 @@
 package com.jiwon.huhyhohy;
 
 import com.jiwon.huhyhohy.domain.board.Board;
+import com.jiwon.huhyhohy.domain.crew.Category;
+import com.jiwon.huhyhohy.domain.crew.Cost;
 import com.jiwon.huhyhohy.domain.crew.Crew;
-import com.jiwon.huhyhohy.domain.reply.Reply;
+import com.jiwon.huhyhohy.domain.comment.Comment;
+import com.jiwon.huhyhohy.domain.crew.CrewType;
 import com.jiwon.huhyhohy.domain.user.User;
 import com.jiwon.huhyhohy.repository.BoardRepository;
 import com.jiwon.huhyhohy.repository.CrewRepository;
-import com.jiwon.huhyhohy.repository.ReplyRepository;
+import com.jiwon.huhyhohy.repository.CommentRepository;
 import com.jiwon.huhyhohy.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
@@ -25,7 +28,7 @@ public class BlogApplication {
   @Autowired
   private CrewRepository crewRepository;
   @Autowired
-  private ReplyRepository replyRepository;
+  private CommentRepository commentRepository;
 
   public static void main(String[] args) {
     SpringApplication.run(BlogApplication.class, args);
@@ -35,25 +38,25 @@ public class BlogApplication {
   public void initData(){
     // 유저 생성 ==============================
     User user1 = User.builder()
-        .name("짱구")
+        .userId("jjang")
         .nickname("짱구")
         .email("test@test.com")
         .password("asdwasd123!")
         .build();
     User user2 = User.builder()
-        .name("흰둥이")
+        .userId("whitedoong")
         .nickname("흰둥이")
         .email("white@test.com")
         .password("asdwasd123!")
         .build();
     User user3 = User.builder()
-        .name("철수")
+        .userId("ironman")
         .nickname("철수")
         .email("cheolsu@test.com")
         .password("asdwasd123!")
         .build();
     User user4 = User.builder()
-        .name("유리")
+        .userId("glass")
         .nickname("유리")
         .email("yuri@test.com")
         .password("asdwasd123!")
@@ -90,28 +93,29 @@ public class BlogApplication {
             .build();
     boardRepository.save(board);
 
-    Reply reply = Reply.builder()
-            .comment("댓글이 정상적으로 생성되었습니다.")
+    Comment comment = Comment.builder()
+            .content("댓글이 정상적으로 생성되었습니다.")
             .board(board)
             .user(user1)
             .build();
-    replyRepository.save(reply);
+    commentRepository.save(comment);
 
-    Reply reReply = Reply.builder()
-            .comment("대댓글이 정상적으로 생성되었습니다.")
+    Comment reply = Comment.builder()
+            .content("대댓글이 정상적으로 생성되었습니다.")
             .board(board)
             .user(user3)
-            .parent(reply)
+            .parent(comment)
             .build();
-    replyRepository.save(reReply);
+    commentRepository.save(reply);
 
     // =======================================
 
     // 크루 생성 ==============================
     Crew crew1 = Crew.builder()
         .name("런닝 메이트")
-        .type(true)
-        .cost(true)
+        .crewType(CrewType.fromString("오프라인"))
+        .cost(Cost.fromString("유료/무료 혼합"))
+        .category(Category.fromString("운동"))
         .isPublished(true)
         .isRecruiting(true)
         .isClosed(false)
@@ -124,8 +128,9 @@ public class BlogApplication {
 
     Crew crew2 = Crew.builder()
         .name("먹부심")
-        .type(false)
-        .cost(true)
+        .crewType(CrewType.fromString("오프라인"))
+        .cost(Cost.fromString("유료"))
+        .category(Category.fromString("모임"))
         .isPublished(true)
         .isRecruiting(true)
         .isClosed(false)
@@ -138,8 +143,9 @@ public class BlogApplication {
 
     Crew crew3 = Crew.builder()
         .name("오버워치")
-        .type(true)
-        .cost(false)
+        .crewType(CrewType.fromString("온라인"))
+        .cost(Cost.fromString("유료"))
+        .category(Category.fromString("게임"))
         .isPublished(true)
         .isRecruiting(true)
         .isClosed(false)
@@ -152,8 +158,9 @@ public class BlogApplication {
 
     Crew crew4 = Crew.builder()
         .name("여행 가자!")
-        .type(false)
-        .cost(true)
+        .crewType(CrewType.fromString("오프라인"))
+        .cost(Cost.fromString("유료"))
+        .category(Category.fromString("여행"))
         .isPublished(true)
         .isRecruiting(true)
         .isClosed(false)
@@ -167,13 +174,14 @@ public class BlogApplication {
 
     Crew crew5 = Crew.builder()
         .name("Spring 스터디")
-        .type(true)
-        .cost(false)
+        .crewType(CrewType.fromString("온/오프 혼합"))
+        .cost(Cost.fromString("무료"))
+        .category(Category.fromString("스터디"))
         .isPublished(true)
         .isRecruiting(true)
         .isClosed(false)
         .wisher("Spring 깊게 스터디 하실 분들만 원합니다.")
-        .plan("1. 주 3회 19:00-21:00\"2. 필수 참석<\n3.zoom 또는 google meet으로 활동합니다.")
+        .plan("1. 주 3회 19:00-21:00\"2. 필수 참석<\n3.zoom 또는 구글밋으로 활동합니다.")
         .description("백엔드 프레임워크인 Spring 스터디이고, 백엔드 개발자 취업에 관해서 정보 공유하는 크루입니다.")
         .build();
     crew5.setUser(user1);

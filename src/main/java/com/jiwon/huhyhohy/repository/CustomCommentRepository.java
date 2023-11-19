@@ -1,8 +1,8 @@
 package com.jiwon.huhyhohy.repository;
 
 import com.jiwon.huhyhohy.domain.board.Board;
-import com.jiwon.huhyhohy.domain.reply.Reply;
-import com.jiwon.huhyhohy.web.dto.reply.ReplyResponseDto;
+import com.jiwon.huhyhohy.domain.comment.Comment;
+import com.jiwon.huhyhohy.web.dto.comment.CommentResponseDto;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.springframework.stereotype.Repository;
 
@@ -22,26 +22,26 @@ public class CustomReplyRepository {
         this.queryFactory = new JPAQueryFactory(em);
     }
 
-    public List<ReplyResponseDto> findByBoard(Board board) {
-        List<Reply> replies =  queryFactory.selectFrom(reply)
+    public List<CommentResponseDto> findByBoard(Board board) {
+        List<Comment> replies =  queryFactory.selectFrom(reply)
                 .leftJoin(reply.parent)
                 .fetchJoin()
                 .where(reply.board.id.eq(board.getId()))
                 .orderBy(reply.parent.id.asc().nullsFirst(), reply.id.asc())
                 .fetch();
 
-        List<ReplyResponseDto> replyResponseDtos = new ArrayList<>();
-        Map<Long, ReplyResponseDto> replyMap = new HashMap<>();
+        List<CommentResponseDto> commentResponseDtos = new ArrayList<>();
+        Map<Long, CommentResponseDto> replyMap = new HashMap<>();
 
         replies.forEach(r -> {
-            ReplyResponseDto replyResponseDto = new ReplyResponseDto(r);
-            replyMap.put(r.getId(), replyResponseDto);
+            CommentResponseDto commentResponseDto = new CommentResponseDto(r);
+            replyMap.put(r.getId(), commentResponseDto);
             if(r.getParent() == null) {
-                replyResponseDtos.add(replyResponseDto);
+                commentResponseDtos.add(commentResponseDto);
             } else {
-                replyMap.get(r.getParent().getId()).getReply().add(replyResponseDto);
+                replyMap.get(r.getParent().getId()).getReply().add(commentResponseDto);
             }
         });
-        return replyResponseDtos;
+        return commentResponseDtos;
     }
 }

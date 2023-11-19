@@ -8,6 +8,6 @@ import lombok.Setter;
 @Getter @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class ReplyUpdateRequestDto {
+public class CommentUpdateRequestDto {
   private String comment;
 }

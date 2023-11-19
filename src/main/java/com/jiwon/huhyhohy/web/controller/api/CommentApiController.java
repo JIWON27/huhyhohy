@@ -2,19 +2,14 @@ package com.jiwon.huhyhohy.web.controller.api;
 
 import com.jiwon.huhyhohy.domain.user.User;
 import com.jiwon.huhyhohy.service.BoardService;
-import com.jiwon.huhyhohy.service.ReplyService;
+import com.jiwon.huhyhohy.service.CommentService;
 import com.jiwon.huhyhohy.service.UserService;
-import com.jiwon.huhyhohy.web.dto.board.BoardResponseDto;
-import com.jiwon.huhyhohy.web.dto.reply.ReplyResponseDto;
-import com.jiwon.huhyhohy.web.dto.reply.ReplySaveRequestDto;
-import com.jiwon.huhyhohy.web.dto.reply.ReplyUpdateRequestDto;
-import com.jiwon.huhyhohy.web.dto.user.UserResponseDto;
+import com.jiwon.huhyhohy.web.dto.comment.CommentResponseDto;
+import com.jiwon.huhyhohy.web.dto.comment.CommentSaveRequestDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpSession;
 import java.util.List;
@@ -24,7 +19,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ReplyApiController {
 
-    private final ReplyService replyService;
+    private final CommentService commentService;
     private final BoardService boardService;
     private final UserService userService;
 
@@ -32,20 +27,20 @@ public class ReplyApiController {
     @PostMapping("/create/{boardId}")
     public ResponseEntity<Void> createComment(
             @PathVariable Long boardId,
-            @ModelAttribute ReplySaveRequestDto replySaveRequestDto,
+            @ModelAttribute CommentSaveRequestDto CommentSaveRequestDto,
             HttpSession session
     ) {
         User loginUser = (User) session.getAttribute("loginUser");
-        replyService.save(boardId, loginUser.getNickname(), replySaveRequestDto);
+        commentService.save(boardId, loginUser.getNickname(), CommentSaveRequestDto);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @GetMapping("/{boardId}")
-    public ResponseEntity<List<ReplyResponseDto>> getComments(
+    public ResponseEntity<List<CommentResponseDto>> getComments(
             @PathVariable Long boardId
     ) {
-        List<ReplyResponseDto> replyResponseDtoList = replyService.findByBoard(boardId);
-        return ResponseEntity.ok(replyResponseDtoList);
+        List<CommentResponseDto> commentResponseDtoList = commentService.findByBoard(boardId);
+        return ResponseEntity.ok(commentResponseDtoList);
     }
 
 //    // 댓글 삭제
